@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fábrica de Producción · Proceso y recursos</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+<script>try{var t=localStorage.getItem("tema");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -17,14 +18,6 @@
   --focus:#1E5C6E;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme: dark;
-    --bg:#1A1618; --surface:#231E20; --ink:#EEE7E9; --muted:#B2A6AA; --line:#3A3235;
-    --vino:#E07A90; --vino-soft:#3A2329; --video:#7CC3D3; --video-soft:#1F3238;
-    --beige:#4A4236; --ok:#8CCB9A; --warn:#E8B565; --warn-soft:#3A2F1F; --focus:#7CC3D3;
-  }
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
@@ -62,6 +55,11 @@ nav.toc li a:hover,nav.toc li a.act{background:var(--vino-soft);color:var(--vino
 nav.toc .n{color:var(--muted);min-width:1.8em;font-variant-numeric:tabular-nums}
 .side .quick{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:15px}
 .side .quick a{display:block;padding:4px 0}
+.side .top{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:20px}
+.side .top .brand{margin:0}
+.top-btns{display:flex;gap:8px;flex-shrink:0}
+.theme-btn{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap}
+.theme-btn:hover{border-color:var(--vino)}
 .menu-btn{display:none}
 
 /* Contenido */
@@ -104,7 +102,6 @@ th{font-weight:700;color:var(--muted);font-size:14px}
 .quickrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;border:1.5px solid var(--vino);color:var(--vino);text-decoration:none;font-weight:700;font-size:15px;background:var(--surface)}
 .btn.solid{background:var(--vino);color:#fff}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.solid{color:#1A1618}}
 :root[data-theme="dark"] .btn.solid{color:#1A1618}
 
 /* Etapas */
@@ -156,7 +153,9 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
   .wrap{grid-template-columns:minmax(0,1fr)}
   .side{position:sticky;top:0;height:auto;max-height:100vh;z-index:10;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line);padding-top:calc(12px + env(safe-area-inset-top,0px))}
   body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--surface)}
-  .side .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .side .top{flex-direction:row;justify-content:space-between;align-items:center;margin-bottom:0}
+  .theme-btn .lbl{display:none}
+  .theme-btn{padding:8px 11px;font-size:16px}
   .brand{margin:0}
   .menu-btn{display:inline-block;font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
   .side .collapse{display:none;padding-top:12px}
@@ -173,7 +172,10 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
 <aside class="side" id="side">
   <div class="top">
     <a class="brand" href="#inicio"><strong>Fábrica de Producción</strong><span>UIDE Maestrías · proceso y recursos</span></a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">Menú</button>
+    <div class="top-btns">
+      <button class="theme-btn" id="themeBtn" type="button"></button>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">Menú</button>
+    </div>
   </div>
   <div class="collapse">
     <div class="search">
@@ -677,6 +679,22 @@ res.addEventListener('click', ev => {
   el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
   cerrarMenu();
 });
+
+// Modo claro / oscuro
+const themeBtn = document.getElementById('themeBtn');
+const temaActual = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+function pintarBotonTema(){
+  const oscuro = temaActual() === 'dark';
+  themeBtn.innerHTML = oscuro ? '<span aria-hidden="true">☀️</span><span class="lbl"> Modo claro</span>' : '<span aria-hidden="true">🌙</span><span class="lbl"> Modo oscuro</span>';
+  themeBtn.setAttribute('aria-label', oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+}
+themeBtn.addEventListener('click', () => {
+  const nuevo = temaActual() === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nuevo);
+  try { localStorage.setItem('tema', nuevo); } catch(e) {}
+  pintarBotonTema();
+});
+pintarBotonTema();
 
 // Menú móvil
 const side = document.getElementById('side'), mb = document.getElementById('menuBtn');

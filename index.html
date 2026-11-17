@@ -382,16 +382,6 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
   <div id="faqList"></div>
 </section>
 
-<section id="mantener">
-  <h2>Cómo actualizar este portal</h2>
-  <p>Todo el contenido que cambia seguido (enlaces, recursos, etapas, preguntas) está en el bloque <code>DATOS</code> al inicio del script, dentro de este mismo archivo <code>index.html</code>.</p>
-  <ol>
-    <li>Abre <code>index.html</code> en GitHub y pulsa el lápiz (Editar).</li>
-    <li>Busca <code>RECURSOS</code> y copia una línea existente para agregar un recurso nuevo. Cambia nombre, frente, tipo, etapa y enlace.</li>
-    <li>Guarda con «Commit changes». La página se actualiza en 1 a 3 minutos (Ctrl+Shift+R en Windows o Cmd+Shift+R en Mac para ver el cambio).</li>
-  </ol>
-  <div class="note warn">No agregues enlaces a datos personales (credenciales, cumpleaños, datos de contacto) ni cifras de desempeño por persona: esta página la puede abrir cualquiera que tenga la dirección.</div>
-</section>
 
 <footer id="pie"></footer>
 </main>
@@ -597,7 +587,7 @@ const FAQ = [
 const SECCIONES = [
   ['inicio','Inicio',''],['ingreso','Ingreso','1'],['calidad-entrada','Calidad de entrada','2'],['cola','Cola y asignación','3'],
   ['diseno','Diseño','4a'],['video','Video','4b'],['cierre','Cierre','5'],['canvas','Cargue a Canvas','6'],['entrega','Entrega','7'],
-  ['recursos','Biblioteca de recursos',''],['lineamientos','Lineamientos',''],['faq','Preguntas frecuentes',''],['mantener','Actualizar el portal',''],
+  ['recursos','Biblioteca de recursos',''],['lineamientos','Lineamientos',''],['faq','Preguntas frecuentes',''],
 ];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ext = (txt,url) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(txt)}</a>`;

@@ -5,222 +5,336 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fábrica de Producción · Proceso y recursos</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
-<script>try{var t=localStorage.getItem("tema");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>var t="dark";try{var g=localStorage.getItem("tema");if(g==="light"||g==="dark")t=g}catch(e){}document.documentElement.setAttribute("data-theme",t);</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme: light;
-  --bg:#FBFAF9; --surface:#FFFFFF; --ink:#2B2326; --muted:#6B6064; --line:#E7E0DD;
-  --vino:#7A1E34; --vino-soft:#F5E9EC; --video:#1E5C6E; --video-soft:#E6F0F2;
-  --beige:#E9DFCC; --ok:#2F6B3F; --warn:#9A5B00; --warn-soft:#FBF1E1;
-  --focus:#1E5C6E;
+  --bg:#FAF8F6; --surface:#FFFFFF; --surface-2:#F4F0EE; --ink:#2A2225; --muted:#665B5F; --line:#E5DEDB;
+  --accent:#7A1E34; --fill:#7A1E34; --on-fill:#FFFFFF; --soft:#F4E8EB;
+  --video:#1E5C6E; --video-soft:#E4EFF2; --beige:#E9DFCC; --on-beige:#3B3226;
+  --warn:#8A5200; --warn-soft:#FBF0DF; --focus:#1E5C6E;
+  --read:46rem; --wide:72rem;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
-  --bg:#1A1618; --surface:#231E20; --ink:#EEE7E9; --muted:#B2A6AA; --line:#3A3235;
-  --vino:#E07A90; --vino-soft:#3A2329; --video:#7CC3D3; --video-soft:#1F3238;
-  --beige:#4A4236; --ok:#8CCB9A; --warn:#E8B565; --warn-soft:#3A2F1F; --focus:#7CC3D3;
+  --bg:#1B1719; --surface:#241F21; --surface-2:#2D272A; --ink:#F1EBE6; --muted:#B7ADA9; --line:#3B3337;
+  --accent:#E6A7B5; --fill:#8C2A42; --on-fill:#FFFFFF; --soft:#3A2329;
+  --video:#88C9D8; --video-soft:#1D3137; --beige:#4A4236; --on-beige:#F1EBE6;
+  --warn:#EDBB6E; --warn-soft:#3A2F1F; --focus:#88C9D8;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 16px);scroll-behavior:smooth}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
-h1,h2,h3,h4{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
-a{color:var(--vino);text-underline-offset:3px}
-a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
-img{max-width:100%}
-.wrap{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:100vh}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 24px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;margin:0;letter-spacing:-.01em}
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+[tabindex="-1"]:focus{outline:none}
+code{font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- Estructura ---------- */
+.wrap{display:grid;grid-template-columns:268px minmax(0,1fr);min-height:100vh}
 .wrap>*{min-width:0}
-
-/* Barra lateral */
-.side{position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);padding:24px 20px;background:var(--surface)}
-.brand{display:block;text-decoration:none;color:var(--ink);margin-bottom:20px}
-.brand strong{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:20px}
-.brand span{font-size:14px;color:var(--muted)}
-.search{position:relative;margin-bottom:18px}
-.search input{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-.results{margin-top:8px;display:none;border:1px solid var(--line);border-radius:8px;max-height:50vh;overflow:auto;background:var(--surface)}
+.side{position:sticky;top:0;height:100vh;overflow:auto;background:var(--surface);border-right:1px solid var(--line);padding:24px 18px;display:flex;flex-direction:column;gap:20px}
+.brand{text-decoration:none;color:var(--ink);display:block}
+.brand strong{display:block;font:700 19px/1.2 "Bricolage Grotesque",sans-serif}
+.brand span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.search{position:relative}
+.search input{width:100%;font:inherit;font-size:15px;padding:9px 34px 9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.search kbd{position:absolute;right:8px;top:8px;font:12px/1 system-ui,sans-serif;padding:4px 6px;border:1px solid var(--line);border-radius:4px;color:var(--muted)}
+.results{display:none;margin-top:6px;border:1px solid var(--line);border-radius:8px;max-height:55vh;overflow:auto;background:var(--surface)}
 .results.on{display:block}
-.results a{display:block;padding:8px 12px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line);font-size:15px}
-.results a small{display:block;color:var(--muted);font-size:13px}
-.results a:hover{background:var(--vino-soft)}
+.results a{display:block;padding:9px 12px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line);font-size:15px;line-height:1.35}
+.results a:last-child{border-bottom:0}
+.results a small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.results a:hover,.results a:focus-visible{background:var(--soft)}
 .results p{margin:0;padding:10px 12px;font-size:14px;color:var(--muted)}
-nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
-nav.toc li a{display:flex;gap:10px;padding:6px 8px;border-radius:6px;text-decoration:none;color:var(--ink);font-size:15px}
-nav.toc li a:hover,nav.toc li a.act{background:var(--vino-soft);color:var(--vino)}
-nav.toc .n{color:var(--muted);min-width:1.8em;font-variant-numeric:tabular-nums}
-.side .quick{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:15px}
-.side .quick a{display:block;padding:4px 0}
-.side .top{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:20px}
-.side .top .brand{margin:0}
-.top-btns{display:flex;gap:8px;flex-shrink:0}
-.theme-btn{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap}
-.theme-btn:hover{border-color:var(--vino)}
-.menu-btn{display:none}
+.navgroup h2{font:700 13px/1 "Atkinson Hyperlegible",sans-serif;color:var(--muted);margin:0 0 6px 8px;letter-spacing:0}
+.navgroup ol{list-style:none;margin:0;padding:0}
+.navgroup a{display:flex;gap:10px;padding:6px 8px;border-radius:6px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.35}
+.navgroup a:hover{background:var(--surface-2)}
+.navgroup a[aria-current="page"]{background:var(--soft);color:var(--accent);font-weight:700}
+.navgroup .n{color:var(--muted);min-width:1.7em;font-variant-numeric:tabular-nums;font-weight:400}
+.navgroup a[aria-current="page"] .n{color:var(--accent)}
+.ext-list a{display:block;padding:4px 8px;line-height:1.35;font-size:15px;color:var(--ink);text-decoration:none;border-radius:6px}
+.ext-list a:hover{background:var(--surface-2)}
+.ext{width:13px;height:13px;flex-shrink:0;opacity:.6;display:inline-block;vertical-align:-1px;margin-left:5px}
+.side-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+.theme-btn{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.theme-btn:hover{border-color:var(--accent)}
+.mobile-bar{display:none}
 
-/* Contenido */
-main{padding:40px clamp(20px,5vw,64px) 80px;max-width:1080px}
-section{padding-top:56px}
-section:first-of-type{padding-top:0}
-h2{font-size:clamp(26px,3.2vw,34px);margin-bottom:12px}
-h3{font-size:21px;margin:28px 0 8px}
-p,li{max-width:72ch}
-.lead{font-size:19px;color:var(--muted);max-width:62ch}
-.note{border-left:4px solid var(--beige);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;max-width:72ch}
+main{padding:48px clamp(20px,5vw,64px) 64px}
+.view{display:none;max-width:var(--read);animation:entra .18s ease-out}
+.view.on{display:block}
+.view.wide{max-width:var(--wide)}
+@keyframes entra{from{opacity:.4}to{opacity:1}}
+
+/* ---------- Tipografía de lectura ---------- */
+.view h2{font-size:clamp(28px,3.4vw,36px);line-height:1.12;font-weight:700}
+.view h2:focus{outline:none}
+.view h3{font-size:20px;font-weight:600;margin:36px 0 10px;line-height:1.25}
+.view p,.view li{max-width:68ch}
+.view ul,.view ol{padding-left:1.3em}
+.view li{margin:4px 0}
+.lead{font-size:19px;line-height:1.55;color:var(--muted);margin:12px 0 0}
+.note{border-left:3px solid var(--beige);background:var(--surface);padding:12px 16px;border-radius:0 8px 8px 0;margin:20px 0;font-size:16px}
 .note.warn{border-color:var(--warn);background:var(--warn-soft)}
-.pending{display:inline-block;font-size:13px;padding:2px 8px;border-radius:99px;background:var(--warn-soft);color:var(--warn);font-weight:700;vertical-align:middle}
-.tbl{overflow-x:auto;margin:12px 0}
-table{border-collapse:collapse;width:100%;font-size:15.5px;background:var(--surface)}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-weight:700;color:var(--muted);font-size:14px}
-.flash{animation:flash 1.6s ease}
-@keyframes flash{0%,40%{background:var(--vino-soft)}100%{background:transparent}}
+.pending{display:inline-block;font:700 12.5px/1.4 "Atkinson Hyperlegible",sans-serif;padding:2px 8px;border-radius:99px;background:var(--warn-soft);color:var(--warn);vertical-align:middle;letter-spacing:0}
 
-/* Hero: la línea de producción */
-.hero h1{font-size:clamp(34px,5.5vw,58px);letter-spacing:-.02em;max-width:16ch}
-.hero .lead{margin:14px 0 28px}
-.line{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.6fr) repeat(3,minmax(0,1fr));gap:10px;align-items:stretch;counter-reset:st}
-.st{position:relative;display:flex;flex-direction:column;gap:4px;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:var(--ink);min-height:96px}
-.st:hover{border-color:var(--vino)}
-.st b{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;line-height:1.2}
-.st small{color:var(--muted);font-size:13px;line-height:1.35}
-.st .num{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.st:not(:last-child)::after{content:"";position:absolute;right:-11px;top:50%;width:10px;height:2px;background:var(--line)}
-.lanes{display:grid;gap:8px}
-.lane{padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--ink);display:block;border:1.5px solid transparent}
-.lane.d{background:var(--vino-soft);border-color:var(--vino)}
-.lane.v{background:var(--video-soft);border-color:var(--video)}
-.lane b{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;display:block}
-.lane.d b{color:var(--vino)} .lane.v b{color:var(--video)}
-.lane small{font-size:13px;color:var(--muted)}
-.lanes-wrap{position:relative}
-.lanes-wrap::after{content:"";position:absolute;right:-11px;top:50%;width:10px;height:2px;background:var(--line)}
-.quickrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;border:1.5px solid var(--vino);color:var(--vino);text-decoration:none;font-weight:700;font-size:15px;background:var(--surface)}
-.btn.solid{background:var(--vino);color:#fff}
-:root[data-theme="dark"] .btn.solid{color:#1A1618}
+/* Paso del proceso: barra de avance */
+.steps{display:flex;gap:4px;margin:0 0 22px;padding:0;list-style:none}
+.steps li{flex:1;margin:0;max-width:none}
+.steps a{display:block;text-decoration:none;color:var(--muted);font-size:13px;line-height:1.3;padding-top:9px;border-top:4px solid var(--line)}
+.steps a:hover{color:var(--ink)}
+.steps .done a{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.steps .now a{border-color:var(--accent);color:var(--ink);font-weight:700}
+.steps .now.v a{border-color:var(--video)}
+.steps b{font-weight:inherit;font-variant-numeric:tabular-nums;margin-right:4px}
+
+/* Ficha del paso */
+.ficha{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:26px 0 8px;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.ficha div{padding:12px 14px;border-left:1px solid var(--line)}
+.ficha div:first-child{border-left:0}
+.ficha dt{font-size:13px;color:var(--muted);margin-bottom:2px}
+.ficha dd{margin:0;font-size:15.5px;line-height:1.4}
+
+/* Tablas */
+.tbl{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:16px;line-height:1.5}
+th,td{text-align:left;padding:10px 14px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13.5px;font-weight:700;color:var(--muted);border-bottom-width:2px}
+td:first-child{font-weight:700;width:30%}
+table.plain td:first-child{font-weight:400}
+
+/* Listas de verificación (requisitos, no casillas) */
+.check{list-style:none;padding:0!important;margin:12px 0}
+.check li{position:relative;padding:6px 0 6px 32px;margin:0;border-bottom:1px solid var(--line)}
+.check li:last-child{border-bottom:0}
+.check li::before{content:"";position:absolute;left:2px;top:10px;width:18px;height:18px;border-radius:50%;background:var(--soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%23C1667B' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
 
 /* Etapas */
-.stages{display:grid;gap:14px;margin-top:16px;counter-reset:e}
+.stage-tools{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:28px}
+.stage-tools h3{margin:0}
+.linkbtn{font:inherit;font-size:15px;background:none;border:0;color:var(--accent);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+.stages{display:grid;gap:8px;margin-top:12px}
 details.stage{border:1px solid var(--line);border-radius:10px;background:var(--surface)}
-details.stage summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:14px 16px}
+details.stage[open]{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+details.stage.v[open]{border-color:color-mix(in srgb,var(--video) 40%,var(--line))}
+details.stage summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:34px 1fr 20px;gap:14px;align-items:center;padding:12px 14px}
 details.stage summary::-webkit-details-marker{display:none}
-.stage .badge{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-family:"Bricolage Grotesque",sans-serif;background:var(--vino-soft);color:var(--vino)}
+.badge{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 15px/1 "Bricolage Grotesque",sans-serif;background:var(--soft);color:var(--accent)}
 .stage.v .badge{background:var(--video-soft);color:var(--video)}
-.stage summary h4{font-size:18px}
-.stage summary p{margin:2px 0 0;color:var(--muted);font-size:15px}
-.stage summary .chev{color:var(--muted);transition:transform .2s}
+.stage summary h4{font-size:17.5px;font-weight:600;line-height:1.3}
+.stage summary p{margin:1px 0 0;color:var(--muted);font-size:15px;line-height:1.4}
+.chev{width:20px;height:20px;color:var(--muted);transition:transform .15s}
 details.stage[open] .chev{transform:rotate(90deg)}
-.stage .body{padding:0 16px 16px 72px}
-.kv{display:grid;grid-template-columns:120px 1fr;gap:4px 14px;margin:0 0 10px;font-size:15.5px}
+.stage .body{padding:2px 18px 18px 62px}
+.stage .body h5{font:700 14px/1.3 "Atkinson Hyperlegible",sans-serif;color:var(--muted);margin:18px 0 4px}
+.stage .body ol{margin:0;padding-left:1.2em}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 14px;margin:0;font-size:15.5px;line-height:1.45;padding:12px 14px;background:var(--surface-2);border-radius:8px}
 .kv dt{color:var(--muted)} .kv dd{margin:0}
-.check{list-style:none;padding:0;margin:8px 0}
-.check li{padding-left:28px;position:relative;margin:4px 0}
-.check li::before{content:"";position:absolute;left:2px;top:5px;width:14px;height:14px;border:1.5px solid var(--muted);border-radius:3px}
-.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.links a{font-size:14.5px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;text-decoration:none;background:var(--bg)}
-.links a:hover{border-color:var(--vino)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.links a{display:inline-flex;align-items:center;gap:6px;font-size:14.5px;padding:6px 11px;border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--ink);background:var(--bg)}
+.links a:hover{border-color:var(--accent)}
 
-/* Biblioteca */
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.chip{font:inherit;font-size:14.5px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+/* Navegación anterior / siguiente */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line)}
+.pager a{display:block;text-decoration:none;color:var(--ink);padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.pager a:hover{border-color:var(--accent)}
+.pager small{display:block;color:var(--muted);font-size:13px}
+.pager b{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:17px}
+.pager .next{text-align:right;grid-column:2}
+
+/* ---------- Inicio ---------- */
+.hero h1{font-size:clamp(36px,5.2vw,60px);line-height:1.04;font-weight:700;letter-spacing:-.025em;max-width:14ch}
+.hero .lead{max-width:56ch;margin-top:16px}
+.line{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.5fr) repeat(3,minmax(0,1fr));gap:0;margin:40px 0 0;position:relative}
+.st{position:relative;display:block;text-decoration:none;color:var(--ink);padding:0 12px 0 0}
+.st .dot{display:flex;align-items:center;margin-bottom:12px}
+.st .dot span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 "Bricolage Grotesque",sans-serif;background:var(--surface);border:2px solid var(--line);color:var(--muted);flex-shrink:0;transition:border-color .15s,color .15s}
+.st .dot::after{content:"";flex:1;height:2px;background:var(--line);margin-left:6px}
+.st:last-child .dot::after{display:none}
+.st b{display:block;font:600 17px/1.2 "Bricolage Grotesque",sans-serif}
+.st small{display:block;color:var(--muted);font-size:14px;line-height:1.35;margin-top:4px}
+.st:hover .dot span{border-color:var(--accent);color:var(--accent)}
+.st:hover b{color:var(--accent)}
+.st.prod{padding-right:12px}
+.prod .dot span{background:var(--surface)}
+.lanes{display:grid;gap:8px}
+.lane{display:block;text-decoration:none;color:var(--ink);padding:10px 12px;border-radius:8px;border-left:4px solid}
+.lane.d{background:var(--soft);border-color:var(--accent)}
+.lane.v{background:var(--video-soft);border-color:var(--video)}
+.lane b{font:600 16px/1.2 "Bricolage Grotesque",sans-serif}
+.lane small{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+.lane:hover b{text-decoration:underline;text-underline-offset:3px}
+.start{margin-top:56px}
+.start h2{font-size:22px;font-weight:600;margin-bottom:14px}
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.path{display:block;text-decoration:none;color:var(--ink);padding:16px 18px;border-radius:10px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent)}
+.path.v{border-top-color:var(--video)} .path.r{border-top-color:var(--muted)}
+.path b{display:block;font:600 18px/1.25 "Bricolage Grotesque",sans-serif}
+.path span{display:block;color:var(--muted);font-size:15px;line-height:1.4;margin-top:4px}
+.path:hover{border-color:var(--accent);border-top-color:inherit}
+.path:hover b{text-decoration:underline;text-underline-offset:3px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;border:1px solid var(--line);color:var(--ink);background:var(--surface)}
+.btn:hover{border-color:var(--accent)}
+.btn.solid{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.btn.solid:hover{filter:brightness(1.08)}
+.btn .ext{opacity:.8}
+
+/* ---------- Biblioteca ---------- */
+.libbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 6px}
+.chip{font:inherit;font-size:14.5px;padding:6px 13px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.libsearch{font:inherit;font-size:16px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:240px}
-.tag{font-size:12.5px;padding:2px 8px;border-radius:99px;white-space:nowrap}
-.tag.d{background:var(--vino-soft);color:var(--vino)} .tag.v{background:var(--video-soft);color:var(--video)}
-.tag.l,.tag.e{background:var(--beige);color:var(--ink)}
-.count{color:var(--muted);font-size:14px}
+.libsearch{font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);flex:1;min-width:200px;max-width:320px}
+.count{color:var(--muted);font-size:14px;margin:6px 0 0}
+#recursos{max-width:60rem}
+.libgroup h3{display:flex;align-items:center;gap:10px}
+.reshead{display:grid;grid-template-columns:minmax(0,1fr) 150px 170px;gap:16px;font-size:13px;color:var(--muted);font-weight:700;padding:0 0 6px}
+.libgroup h3 i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.reslist{list-style:none;margin:0;padding:0!important;border-top:1px solid var(--line)}
+.reslist li{display:grid;grid-template-columns:minmax(0,1fr) 150px 170px;gap:16px;align-items:baseline;padding:10px 0;margin:0;max-width:none;border-bottom:1px solid var(--line)}
+.reslist a{color:var(--ink);text-decoration:none;font-size:16.5px}
+.reslist a:hover{color:var(--accent);text-decoration:underline}
+.reslist .tipo,.reslist .uso{font-size:14.5px;color:var(--muted)}
+.empty{padding:16px 0;color:var(--muted)}
 
 /* FAQ */
-details.faq{border-bottom:1px solid var(--line);padding:12px 0}
-details.faq summary{cursor:pointer;font-weight:700}
-details.faq p{margin:8px 0 0}
+details.faq{border-bottom:1px solid var(--line);padding:14px 0}
+details.faq summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"+";color:var(--muted);font-weight:400;font-size:20px;line-height:1}
+details.faq[open] summary::after{content:"–"}
+details.faq p{margin:8px 0 0;color:var(--ink)}
 
-footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer{margin-top:56px;color:var(--muted);font-size:13.5px;max-width:var(--wide)}
+.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{background:var(--soft)}100%{background:transparent}}
 
-/* Móvil */
-@media (max-width:1000px){
-  .line{grid-template-columns:1fr;gap:8px}
-  .st{min-height:0}
-  .st:not(:last-child)::after,.lanes-wrap::after{right:auto;left:24px;top:auto;bottom:-9px;width:2px;height:8px}
-  .lanes{grid-template-columns:1fr 1fr}
+/* ---------- Pantallas medianas ---------- */
+@media (max-width:1180px){
+  .line{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:28px}
+  .st.prod{grid-column:span 1}
+  .st:nth-child(4) .dot::after{display:none}
 }
-@media (max-width:820px){
+/* ---------- Celular ---------- */
+@media (max-width:860px){
   .wrap{grid-template-columns:minmax(0,1fr)}
-  .side{position:sticky;top:0;height:auto;max-height:100vh;z-index:10;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line);padding-top:calc(12px + env(safe-area-inset-top,0px))}
-  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--surface)}
-  .side .top{flex-direction:row;justify-content:space-between;align-items:center;margin-bottom:0}
-  .theme-btn .lbl{display:none}
-  .theme-btn{padding:8px 11px;font-size:16px}
-  .brand{margin:0}
-  .menu-btn{display:inline-block;font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-  .side .collapse{display:none;padding-top:12px}
-  .side.open .collapse{display:block;max-height:70vh;overflow:auto}
-  .stage .body{padding:0 16px 16px}
+  .side{position:fixed;inset:0;z-index:30;height:auto;transform:translateX(-100%);transition:transform .2s;padding-top:calc(16px + env(safe-area-inset-top,0px));width:min(320px,86vw);box-shadow:0 0 0 100vmax rgba(0,0,0,0)}
+  .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.45)}
+  .mobile-bar{display:flex;position:sticky;top:0;z-index:20;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:var(--surface);border-bottom:1px solid var(--line)}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--surface)}
+  .mobile-bar .brand strong{font-size:17px}
+  .mobile-bar .brand span{display:none}
+  .mobile-bar .btns{display:flex;gap:8px}
+  .menu-btn,.mb-theme{font:inherit;font-size:15px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer}
+  main{padding:28px 18px 48px}
+  .line{grid-template-columns:1fr;row-gap:0;margin-top:28px}
+  .st{display:grid;grid-template-columns:30px 1fr;column-gap:14px;padding:0 0 18px;position:relative}
+  .st .dot{margin:0;grid-row:span 2}
+  .st .dot::after{display:none}
+  .st::before{content:"";position:absolute;left:14px;top:32px;bottom:0;width:2px;background:var(--line)}
+  .st:last-child::before{display:none}
+  .st.prod .dot{grid-row:1;align-self:start;margin-top:10px}
+  .lanes{grid-column:2;grid-row:1}
+  .paths{grid-template-columns:1fr}
+  .ficha{grid-template-columns:1fr 1fr}
+  .ficha div:nth-child(3){border-left:0}
+  .ficha div:nth-child(n+3){border-top:1px solid var(--line)}
+  .steps a{font-size:0;padding-top:0}
+  .steps .now a{font-size:13.5px;padding-top:8px;white-space:nowrap}
+  .steps li.now{flex:3}
+  .stage .body{padding:2px 14px 16px}
   .kv{grid-template-columns:1fr}
-  .kv dt{margin-top:6px}
-  .lanes{grid-template-columns:1fr}
+  .kv dt{margin-top:4px}
+  .reslist li{grid-template-columns:1fr;gap:2px}
+  .reshead{display:none}
+  .reslist .uso:not(:empty)::before{content:"Se usa en: "}
+  .pager{grid-template-columns:1fr}
+  .pager .next{grid-column:1}
+  /* Tablas como fichas apiladas */
+  .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{padding:12px 0;border-bottom:1px solid var(--line)}
+  .tbl td{border:0;padding:2px 0;width:auto}
+  .tbl td:first-child{font-size:17px;margin-bottom:4px}
+  .tbl td:not(:first-child)::before{content:attr(data-label);display:block;font-size:13px;color:var(--muted);margin-top:6px}
 }
 </style>
 </head>
 <body>
+<div class="mobile-bar">
+  <a class="brand" href="#inicio"><strong>Fábrica de Producción</strong></a>
+  <div class="btns">
+    <button class="mb-theme" type="button" aria-label="Cambiar modo de color"></button>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="side">Menú</button>
+  </div>
+</div>
 <div class="wrap">
-<aside class="side" id="side">
-  <div class="top">
-    <a class="brand" href="#inicio"><strong>Fábrica de Producción</strong><span>UIDE Maestrías · proceso y recursos</span></a>
-    <div class="top-btns">
-      <button class="theme-btn" id="themeBtn" type="button"></button>
-      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">Menú</button>
-    </div>
+<aside class="side" id="side" aria-label="Navegación">
+  <a class="brand" href="#inicio"><strong>Fábrica de Producción</strong><span>Proceso y recursos de UIDE Maestrías</span></a>
+  <div class="search">
+    <label for="q" class="sr">Buscar en el portal</label>
+    <input id="q" type="search" placeholder="Buscar en el portal" autocomplete="off">
+    <kbd aria-hidden="true">/</kbd>
+    <div class="results" id="results" aria-live="polite"></div>
   </div>
-  <div class="collapse">
-    <div class="search">
-      <label for="q" style="position:absolute;left:-9999px">Buscar en el portal</label>
-      <input id="q" type="search" placeholder="Buscar: banner, Synthesia, incidencia…" autocomplete="off">
-      <div class="results" id="results" aria-live="polite"></div>
-    </div>
-    <nav class="toc" aria-label="Secciones">
-      <ol id="toc"></ol>
-    </nav>
-    <div class="quick" id="quick"></div>
-  </div>
+  <nav class="navgroup" aria-labelledby="ng1"><h2 id="ng1">El proceso</h2><ol id="navProceso"></ol></nav>
+  <nav class="navgroup" aria-labelledby="ng2"><h2 id="ng2">Consulta</h2><ol id="navConsulta"></ol></nav>
+  <div class="navgroup"><h2>Accesos directos</h2><div class="ext-list" id="quick"></div></div>
+  <div class="side-foot"><button class="theme-btn" id="themeBtn" type="button"></button></div>
 </aside>
 
 <main id="main">
 
-<section id="inicio" class="hero">
-  <h1>Cómo se produce una asignatura</h1>
-  <p class="lead">Este portal reúne el proceso completo de la Fábrica, desde que una materia ingresa hasta que llega a UIDE, con el enlace a cada instructivo, plantilla y recurso del Drive. Toca una estación para ir a su detalle.</p>
-  <div class="line" id="line">
-    <a class="st" href="#ingreso"><span class="num">1</span><b>Ingreso</b><small>La materia llega con su carpeta y fecha de lanzamiento</small></a>
-    <a class="st" href="#calidad-entrada"><span class="num">2</span><b>Calidad de entrada</b><small>Revisión de 9 puntos antes de la cola</small></a>
-    <a class="st" href="#cola"><span class="num">3</span><b>Cola y asignación</b><small>Automática, por fecha de lanzamiento</small></a>
-    <div class="lanes-wrap"><div class="lanes">
-      <a class="lane d" href="#diseno"><b>4a · Diseño</b><small>10 etapas · 3 días hábiles por materia</small></a>
-      <a class="lane v" href="#video"><b>4b · Video</b><small>6 videos · 1 materia por día</small></a>
-    </div></div>
-    <a class="st" href="#cierre"><span class="num">5</span><b>Cierre</b><small>Banner y revisión de 6 puntos</small></a>
-    <a class="st" href="#canvas"><span class="num">6</span><b>Cargue a Canvas</b><small>Checklist de 8 puntos</small></a>
-    <a class="st" href="#entrega"><span class="num">7</span><b>Entrega</b><small>Correo automático a UIDE</small></a>
+<section id="inicio" class="view wide hero" data-titulo="Inicio">
+  <h1 tabindex="-1">Cómo se produce una asignatura</h1>
+  <p class="lead">Del ingreso de la carpeta a la entrega a UIDE: qué pasa en cada paso, quién lo hace y dónde está cada archivo.</p>
+  <div class="line">
+    <a class="st" href="#ingreso"><span class="dot"><span>1</span></span><b>Ingreso</b><small>Llega la carpeta del curso</small></a>
+    <a class="st" href="#calidad-entrada"><span class="dot"><span>2</span></span><b>Calidad de entrada</b><small>Revisión de 9 puntos</small></a>
+    <a class="st" href="#cola"><span class="dot"><span>3</span></span><b>Cola</b><small>Asignación automática</small></a>
+    <div class="st prod"><span class="dot"><span>4</span></span>
+      <div class="lanes">
+        <a class="lane d" href="#diseno"><b>Diseño</b><small>10 etapas en 3 días hábiles</small></a>
+        <a class="lane v" href="#video"><b>Video</b><small>6 videos en 1 día hábil</small></a>
+      </div>
+    </div>
+    <a class="st" href="#cierre"><span class="dot"><span>5</span></span><b>Cierre</b><small>Banner y revisión de 6 puntos</small></a>
+    <a class="st" href="#canvas"><span class="dot"><span>6</span></span><b>Cargue a Canvas</b><small>Montaje y verificación</small></a>
+    <a class="st" href="#entrega"><span class="dot"><span>7</span></span><b>Entrega</b><small>Correo automático a UIDE</small></a>
   </div>
-  <div class="quickrow" id="heroLinks"></div>
+  <div class="start">
+    <h2>¿Por dónde empiezo?</h2>
+    <div class="paths">
+      <a class="path" href="#diseno"><b>Trabajo en diseño</b><span>Las 10 etapas, con herramienta, pasos y enlaces de cada una.</span></a>
+      <a class="path v" href="#video"><b>Trabajo en video</b><span>Del guion al video en Synthesia, y el video del profesor.</span></a>
+      <a class="path r" href="#recursos"><b>Busco un archivo</b><span>Instructivos, plantillas, imágenes y manuales del Drive.</span></a>
+    </div>
+  </div>
+  <div class="actions" id="heroLinks"></div>
 </section>
 
-<section id="ingreso">
-  <h2>1. Ingreso de la materia</h2>
-  <p>Una asignatura entra a la Fábrica cuando Diseño Instruccional entrega su carpeta de curso y se registra en el dashboard con su programa, su fecha de lanzamiento y el enlace a la carpeta (botón «Carpeta del curso»).</p>
+<section id="ingreso" class="view" data-titulo="Ingreso" data-paso="1">
+  <h2 tabindex="-1">Ingreso de la materia</h2>
+  <p class="lead">Una asignatura entra a la Fábrica cuando Diseño Instruccional entrega su carpeta y se registra en el dashboard con su fecha de lanzamiento.</p>
   <h3>Qué debe traer la carpeta</h3>
-  <p>Cada asignatura tiene 3 clases, y cada clase tiene 2 documentos base. Siempre se parte de 6 documentos:</p>
+  <p>Cada asignatura tiene 3 clases, y cada clase tiene 2 documentos base: en total, 6 documentos. A eso se suman los guiones de video.</p>
   <div class="tbl"><table>
     <thead><tr><th>Documento</th><th>Qué contiene</th><th>Para qué se usa</th></tr></thead>
     <tbody>
-      <tr><td>Documento de Clase (Clase 1, 2 y 3)</td><td>El contenido académico: introducción, desarrollo, temas y subtemas.</td><td>Base de casi todos los recursos.</td></tr>
-      <tr><td>“Qué hemos aprendido” (Clase 1, 2 y 3)</td><td>Preguntas y respuestas de cada subtema.</td><td>Construir la Estructura Canvas.</td></tr>
-      <tr><td>Guiones de video</td><td>El texto de los videos de la asignatura.</td><td>Entrada del frente de video.</td></tr>
+      <tr><td>Documento de Clase (1, 2 y 3)</td><td>El contenido académico: introducción, desarrollo, temas y subtemas.</td><td>Es la base de casi todos los recursos.</td></tr>
+      <tr><td>“Qué hemos aprendido” (1, 2 y 3)</td><td>Preguntas y respuestas de cada subtema.</td><td>Sirve para la Estructura Canvas.</td></tr>
+      <tr><td>Guiones de video</td><td>El texto de los videos de la asignatura.</td><td>Es la entrada del frente de video.</td></tr>
     </tbody>
   </table></div>
   <div class="note">En los documentos de origen se habla de <em>subtemas</em>; en producción se suelen llamar <em>temas</em>. Usa siempre el mismo nombre dentro de cada etapa.</div>
@@ -228,45 +342,47 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
   <div class="tbl"><table>
     <thead><tr><th>Fecha</th><th>Qué significa</th></tr></thead>
     <tbody>
-      <tr><td>Fecha de ingreso a fábrica</td><td>El día en que la materia llega. Si llega después de lo que marca el Cronograma, ingresa tarde.</td></tr>
-      <tr><td>Tope de fábrica</td><td>Fecha de lanzamiento menos 10 días hábiles (festivos de Colombia). Pasado el tope sin completar, la materia queda como <strong>Vencida</strong> y pasa al frente de la cola.</td></tr>
-      <tr><td>Fecha de lanzamiento</td><td>Cuando UIDE abre la materia a los estudiantes. Ordena toda la cola.</td></tr>
+      <tr><td>Ingreso a fábrica</td><td>El día en que llega la materia. Si llega después de lo que marca el Cronograma, ingresa tarde.</td></tr>
+      <tr><td>Tope de fábrica</td><td>La fecha de lanzamiento menos 10 días hábiles (festivos de Colombia). Si pasa el tope sin completarse, la materia queda <strong>Vencida</strong> y va primero en la cola.</td></tr>
+      <tr><td>Lanzamiento</td><td>El día en que UIDE abre la materia a los estudiantes. Esta fecha ordena toda la cola.</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<section id="calidad-entrada">
-  <h2>2. Calidad de entrada</h2>
-  <p>Una materia nueva no entra a la cola de producción hasta que Calidad la revisa con la pauta de 9 puntos. Mientras tanto aparece en el dashboard como «En revisión de calidad»: no se asigna, no se puede iniciar un timer y no cuenta en la proyección.</p>
+<section id="calidad-entrada" class="view" data-titulo="Calidad de entrada" data-paso="2">
+  <h2 tabindex="-1">Calidad de entrada</h2>
+  <p class="lead">Una materia nueva no entra a la cola hasta que Calidad la revisa. Mientras tanto no se asigna, no admite timers y no cuenta en la proyección.</p>
+  <h3>Estados de la revisión</h3>
   <div class="tbl"><table>
     <thead><tr><th>Estado</th><th>Quién tiene la tarea</th><th>Qué pasa</th></tr></thead>
     <tbody>
       <tr><td>Sin revisar</td><td>Calidad</td><td>Se revisa con la pauta de 9 puntos.</td></tr>
-      <tr><td>Devuelta a instruccional</td><td>Diseño Instruccional</td><td>Algún punto no está bien; instruccional corrige (solo o con el docente).</td></tr>
-      <tr><td>Lista para re-revisión</td><td>Calidad</td><td>Instruccional confirmó los ajustes; se hace una nueva ronda.</td></tr>
-      <tr><td>Cerrada</td><td>—</td><td>Los 9 puntos quedan bien. La materia pasa a la cola y se avisa a video.</td></tr>
-      <tr><td>Pasó con observaciones</td><td>—</td><td>Entra a la cola con una nota; las incidencias siguen abiertas durante la producción.</td></tr>
+      <tr><td>Devuelta a instruccional</td><td>Diseño Instruccional</td><td>Algún punto no está bien; instruccional lo corrige, solo o con el docente.</td></tr>
+      <tr><td>Lista para re-revisión</td><td>Calidad</td><td>Instruccional confirmó los ajustes y se hace otra ronda.</td></tr>
+      <tr><td>Cerrada</td><td>Nadie</td><td>Los 9 puntos están bien. La materia pasa a la cola y se avisa a video.</td></tr>
+      <tr><td>Pasó con observaciones</td><td>Nadie</td><td>Entra a la cola con una nota; las incidencias siguen abiertas durante la producción.</td></tr>
     </tbody>
   </table></div>
-  <div class="note">Alarma: si una materia pasa 1 día hábil sin movimiento en cualquiera de estos estados, el dashboard lo marca.</div>
+  <div class="note">Si una materia pasa 1 día hábil sin movimiento en cualquiera de estos estados, el dashboard lo marca.</div>
 </section>
 
-<section id="cola">
-  <h2>3. Cola y asignación</h2>
-  <p>Nadie asigna materias a mano. Cuando terminas una, el dashboard te da la siguiente según la fecha de lanzamiento (las vencidas primero) y te reserva otra antes de que termines.</p>
-  <h3>Reglas del dashboard que conviene conocer</h3>
+<section id="cola" class="view" data-titulo="Cola y asignación" data-paso="3">
+  <h2 tabindex="-1">Cola y asignación</h2>
+  <p class="lead">Nadie asigna materias a mano. Cuando terminas una, el dashboard te da la siguiente según la fecha de lanzamiento, con las vencidas primero.</p>
+  <h3>Reglas del dashboard</h3>
   <div class="tbl"><table>
     <thead><tr><th>Regla</th><th>Qué hace</th></tr></thead>
     <tbody>
-      <tr><td>Plazo automático</td><td>El plazo empieza a contar desde que se te asigna la materia, aunque aún no hayas iniciado un timer: 3 días hábiles en diseño y 1 en video.</td></tr>
-      <tr><td>Sin movimiento</td><td>Si una materia asignada pasa 1 día hábil completo sin trabajo de diseño y hay otra persona libre, el dashboard la pasa a esa persona.</td></tr>
-      <tr><td>Vencida</td><td>Pasó el tope de fábrica sin completarse: va primero en la cola.</td></tr>
-      <tr><td>Video</td><td>Las materias se reparten entre los editores por urgencia. Si un editor se pausa, lo no empezado pasa a los demás.</td></tr>
+      <tr><td>Plazo automático</td><td>El plazo cuenta desde que se te asigna la materia, aunque no hayas iniciado un timer.</td></tr>
+      <tr><td>Siguiente reservada</td><td>Antes de que termines, el dashboard te reserva la próxima materia.</td></tr>
+      <tr><td>Sin movimiento</td><td>Si una materia asignada pasa 1 día hábil completo sin trabajo de diseño y hay otra persona libre, pasa a esa persona.</td></tr>
+      <tr><td>Vencida</td><td>Pasó el tope de fábrica sin completarse y va primero en la cola.</td></tr>
+      <tr><td>Reparto en video</td><td>Las materias se reparten entre los editores por urgencia. Si un editor se pausa, lo no empezado pasa a los demás.</td></tr>
     </tbody>
   </table></div>
-  <h3>Timers: cómo registrar el trabajo</h3>
-  <ul>
-    <li>Un solo timer a la vez. Dos timers en paralelo cuentan el mismo tiempo dos veces y distorsionan las cifras del equipo.</li>
+  <h3>Cómo registrar el trabajo con timers</h3>
+  <ul class="check">
+    <li>Usa un solo timer a la vez. Dos timers en paralelo cuentan el mismo tiempo dos veces.</li>
     <li>Pausa el timer cuando paras y complétalo al terminar la tarea.</li>
     <li>Las sesiones de 1 minuto o menos y las de más de 8 horas no se cuentan.</li>
     <li>Si activas un timer por error, avisa a coordinación para que lo elimine.</li>
@@ -275,51 +391,55 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
   <div class="tbl"><table>
     <thead><tr><th>Frente</th><th>Meta por persona</th><th>Cómo se mide</th></tr></thead>
     <tbody>
-      <tr><td>Diseño</td><td>1 asignatura cada 3 días hábiles (1,67 por semana de 5 días; 1,33 en semana de 4)</td><td>Entregables trabajados en la semana ÷ 12</td></tr>
-      <tr><td>Video</td><td>1 asignatura por día hábil</td><td>Videos trabajados ÷ 6</td></tr>
+      <tr><td>Diseño</td><td>1 asignatura cada 3 días hábiles: 1,67 en una semana de 5 días y 1,33 en una de 4.</td><td>Entregables trabajados en la semana ÷ 12</td></tr>
+      <tr><td>Video</td><td>1 asignatura por día hábil.</td><td>Videos trabajados ÷ 6</td></tr>
     </tbody>
   </table></div>
-  <p>Las metas usan días hábiles con festivos de Colombia. El trabajo registrado el sábado o el domingo sí cuenta en la producción de la semana.</p>
+  <p>Las metas usan días hábiles con festivos de Colombia. Lo que registres el sábado o el domingo sí suma a la producción de la semana.</p>
 </section>
 
-<section id="diseno">
-  <h2>4a. Frente de diseño: las 10 etapas</h2>
-  <p>Cada etapa produce lo que necesita la siguiente. Síguelas en orden y verifica cada una antes de avanzar. El detalle completo está en el <a id="lnkProceso" href="#">Instructivo: Proceso Completo</a>.</p>
+<section id="diseno" class="view" data-titulo="Diseño" data-paso="4">
+  <h2 tabindex="-1">Frente de diseño</h2>
+  <p class="lead">Diez etapas en orden: cada una produce lo que necesita la siguiente. Verifica cada etapa antes de avanzar.</p>
+  <div class="stage-tools"><h3>Las 10 etapas</h3><button class="linkbtn" type="button" data-toggle="stagesD">Abrir todas</button></div>
   <div class="stages" id="stagesD"></div>
-  <h3>Al terminar: entregables de diseño</h3>
-  <div class="tbl"><table>
+  <h3>Lo que entregas al terminar</h3>
+  <div class="tbl"><table class="plain">
     <thead><tr><th>Entregable</th><th>Cantidad</th></tr></thead>
     <tbody id="entregablesD"></tbody>
   </table></div>
   <ul class="check">
     <li>Todos los recursos están bien nombrados.</li>
     <li>Cada recurso está asociado a la clase y al tema correctos.</li>
-    <li>Todo está guardado en su carpeta, en versión final y sin archivos faltantes.</li>
+    <li>Todo está en su carpeta, en versión final y sin archivos faltantes.</li>
   </ul>
+  <p>El detalle completo está en el <a id="lnkProceso" href="#" target="_blank" rel="noopener">Instructivo: Proceso Completo</a>.</p>
 </section>
 
-<section id="video">
-  <h2>4b. Frente de video</h2>
-  <p>Por cada asignatura se producen 6 videos. La meta es 1 asignatura por editor por día hábil.</p>
+<section id="video" class="view" data-titulo="Video" data-paso="4">
+  <h2 tabindex="-1">Frente de video</h2>
+  <p class="lead">Por cada asignatura se producen 6 videos. La meta es 1 asignatura por editor por día hábil.</p>
+  <h3>Los 6 videos</h3>
   <div class="tbl"><table>
     <thead><tr><th>Video</th><th>Entrada</th><th>Cómo se hace</th></tr></thead>
     <tbody>
-      <tr><td>Video de introducción</td><td>Guion de instruccional</td><td>Skill de video + Synthesia</td></tr>
-      <tr><td>Video clase 1, 2 y 3</td><td>Guion de instruccional</td><td>Skill de video + Synthesia</td></tr>
+      <tr><td>Introducción</td><td>Guion de instruccional</td><td>Skill de video y Synthesia</td></tr>
+      <tr><td>Clase 1, 2 y 3</td><td>Guion de instruccional</td><td>Skill de video y Synthesia</td></tr>
       <tr><td>Video del profesor</td><td>Grabación del docente</td><td>Edición con cortinillas EIG y UIDE</td></tr>
       <tr><td>Genially RDA</td><td>Por definir</td><td><span class="pending">Por documentar</span></td></tr>
     </tbody>
   </table></div>
+  <div class="stage-tools"><h3>Paso a paso</h3><button class="linkbtn" type="button" data-toggle="stagesV">Abrir todas</button></div>
   <div class="stages" id="stagesV"></div>
 </section>
 
-<section id="cierre">
-  <h2>5. Cierre de la asignatura</h2>
-  <p>Cuando la producción llega al 100 %, la materia no pasa a Completada hasta tener el cierre. Mientras falte, el dashboard muestra 99 % y el aviso «FALTA CIERRE». El cierre tiene dos partes:</p>
-  <ul>
-    <li><strong>Banner:</strong> se da por hecho solo con el timer «Creación de banner».</li>
-    <li><strong>Revisión de 6 puntos</strong> en la pestaña «Cierre» de la tarjeta. Cualquier persona del equipo puede marcarla; los 6 son obligatorios.</li>
-  </ul>
+<section id="cierre" class="view" data-titulo="Cierre" data-paso="5">
+  <h2 tabindex="-1">Cierre de la asignatura</h2>
+  <p class="lead">Al llegar al 100 %, la materia no pasa a Completada hasta tener el cierre. Mientras falte, el dashboard muestra 99 % y el aviso «FALTA CIERRE».</p>
+  <h3>Banner</h3>
+  <p>Se da por hecho solo con el timer «Creación de banner».</p>
+  <h3>Revisión de 6 puntos</h3>
+  <p>Está en la pestaña «Cierre» de la tarjeta. Cualquier persona del equipo puede marcarla y los 6 puntos son obligatorios.</p>
   <ul class="check">
     <li>Imágenes completas y de esta materia.</li>
     <li>Título de cada video igual al de la clase, sin logo de Synthesia y con el enlace abierto.</li>
@@ -330,9 +450,10 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
   </ul>
 </section>
 
-<section id="canvas">
-  <h2>6. Cargue a Canvas</h2>
-  <p>Con la materia cerrada, se monta en Canvas y se verifica con este checklist:</p>
+<section id="canvas" class="view" data-titulo="Cargue a Canvas" data-paso="6">
+  <h2 tabindex="-1">Cargue a Canvas</h2>
+  <p class="lead">Con la materia cerrada, se monta en Canvas y se verifica punto por punto. Al terminar se anota qué se encontró y si se corrigió.</p>
+  <h3>Checklist de cargue</h3>
   <ul class="check">
     <li>La maquetación de cada clase está cargada (Clases 1 a 3), en su módulo y con su nombre.</li>
     <li>La estructura de Canvas sigue la matriz de arranque.</li>
@@ -343,47 +464,45 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:v
     <li>Los nombres de maestría, materia y clases son iguales a los de la matriz.</li>
     <li>Los enlaces y videos abren desde Canvas.</li>
   </ul>
-  <p>Al terminar se anota qué se encontró y si se corrigió.</p>
 </section>
 
-<section id="entrega">
-  <h2>7. Entrega a UIDE</h2>
-  <p>Cuando la materia pasa a Completada, el dashboard envía solo el correo de entrega a UIDE, con copia a coordinación. Para que salga se necesitan dos cosas:</p>
-  <ul>
-    <li>El cierre completo (banner y revisión 6/6).</li>
-    <li>El enlace del curso registrado en la asignatura.</li>
+<section id="entrega" class="view" data-titulo="Entrega" data-paso="7">
+  <h2 tabindex="-1">Entrega a UIDE</h2>
+  <p class="lead">Cuando la materia pasa a Completada, el dashboard envía solo el correo de entrega a UIDE, con copia a coordinación.</p>
+  <h3>Para que el correo salga</h3>
+  <ul class="check">
+    <li>El cierre está completo: banner y revisión 6 de 6.</li>
+    <li>El enlace del curso está registrado en la asignatura.</li>
   </ul>
-  <div class="note">Si una materia aparece completa y el correo no salió, revisa primero estas dos condiciones y avisa a coordinación.</div>
+  <div class="note">Si una materia aparece completa y el correo no salió, revisa primero estas dos condiciones y luego avisa a coordinación.</div>
 </section>
 
-<section id="recursos">
-  <h2>Biblioteca de recursos</h2>
-  <p>Todo lo que está en el Drive de la Fábrica, ordenado por frente. Los enlaces abren la carpeta o el archivo en Drive.</p>
-  <div class="filters" role="group" aria-label="Filtrar por frente" id="chips"></div>
-  <input class="libsearch" id="libq" type="search" placeholder="Filtrar recursos…" aria-label="Filtrar recursos">
-  <p class="count" id="libcount"></p>
-  <div class="tbl"><table>
-    <thead><tr><th>Recurso</th><th>Frente</th><th>Tipo</th><th>Se usa en</th></tr></thead>
-    <tbody id="lib"></tbody>
-  </table></div>
+<section id="recursos" class="view wide" data-titulo="Biblioteca de recursos">
+  <h2 tabindex="-1">Biblioteca de recursos</h2>
+  <p class="lead">Todo lo que está en el Drive de la Fábrica. Cada enlace abre la carpeta o el archivo en Drive.</p>
+  <div class="libbar">
+    <div role="group" aria-label="Filtrar por frente" id="chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    <input class="libsearch" id="libq" type="search" placeholder="Filtrar por nombre o etapa" aria-label="Filtrar recursos">
+  </div>
+  <p class="count" id="libcount" aria-live="polite"></p>
+  <div id="lib"></div>
 </section>
 
-<section id="lineamientos">
-  <h2>Lineamientos</h2>
+<section id="lineamientos" class="view" data-titulo="Lineamientos">
+  <h2 tabindex="-1">Lineamientos</h2>
+  <p class="lead">Las reglas que vienen de fuera de la Fábrica: cómo entregan los docentes y cómo se aplica la marca.</p>
   <h3>Contenido de los profesores</h3>
-  <p>Las guías de generación de contenido definen cómo entregan los docentes y el equipo instruccional. La versión vigente es la del 23 de octubre de 2026, en formato corto y largo; hay una comparativa con la versión anterior.</p>
+  <p>Las guías de generación de contenido definen cómo entregan los docentes y el equipo instruccional. La versión vigente es la del 23 de octubre de 2026, en formato <a data-rec="Guía de generación de contenido corta (23/10/2026)">corto</a> y <a data-rec="Guía de generación de contenido larga (23/10/2026)">largo</a>, con una <a data-rec="Comparativa de guías (oct. 2026)">comparativa</a> frente a la versión anterior.</p>
   <h3>Marca</h3>
-  <p>Toda pieza respeta el manual de identidad de EIG Campus y los lineamientos de marca de UIDE. Los fondos del banco siguen los colores por clase: vino (Clase 1), beige (Clase 2) y negro (Clase 3).</p>
+  <p>Toda pieza respeta el <a data-rec="Manual de identidad EIG Campus">manual de identidad de EIG Campus</a> y los <a data-rec="Lineamientos de marca UIDE (Academia)">lineamientos de marca de UIDE</a>. Los fondos del banco siguen los <a data-rec="Colores de plantillas UIDE">colores por clase</a>: vino para la Clase 1, beige para la Clase 2 y negro para la Clase 3.</p>
   <h3>Nueva metodología <span class="pending">En construcción</span></h3>
-  <p>Se están probando formatos de audiopodcast y videopodcast. Los ejemplos y el instructivo de audiopodcast están en la carpeta de metodologías. Mientras no se adopte, el proceso vigente es el de esta página.</p>
-  <div class="links" id="lineLinks"></div>
+  <p>Se están probando formatos de audiopodcast y videopodcast. Los <a data-rec="Nueva metodología: ideas y ejemplos">ejemplos</a> y el <a data-rec="Instructivo AudioPodcast">instructivo de audiopodcast</a> están en la carpeta de metodologías. Mientras no se adopte, el proceso vigente es el de este portal.</p>
 </section>
 
-<section id="faq">
-  <h2>Preguntas frecuentes</h2>
-  <div id="faqList"></div>
+<section id="faq" class="view" data-titulo="Preguntas frecuentes">
+  <h2 tabindex="-1">Preguntas frecuentes</h2>
+  <div id="faqList" style="margin-top:18px"></div>
 </section>
-
 
 <footer id="pie"></footer>
 </main>
@@ -513,7 +632,7 @@ const ETAPAS_VIDEO = [
    links:[['Skill de video',L.skillVideo],['Instructivo: Skill Storyboard Videos',L.insVideo]]},
   {t:'Crear el video en Synthesia', r:'Pega el prompt, configura y genera.',
    herr:'Synthesia', ent:'El prompt del paso 3.', res:'Video con avatar y branding de Maestrías EIG.',
-   pasos:['En Home, pega el prompt del paso 3.','Configura: modo Maintain · avatar que corresponda (ícono +) · duración Medium (ícono del reloj) · Style: Branding Maestrías EIG · Delivery: Dynamic.','Revisa que las escenas coincidan con el storyboard.','Pulsa Edit para los ajustes manuales.'],
+   pasos:['En Home, pega el prompt del paso 3.','Configura así: modo Maintain; el avatar que corresponda (ícono +); duración Medium (ícono del reloj); en Style, Branding Maestrías EIG; en Delivery, Dynamic.','Revisa que las escenas coincidan con el storyboard.','Pulsa Edit para los ajustes manuales.'],
    check:['El guion pasó por los 3 pasos de la skill.','El prompt es el del paso 3.','Configuración: Maintain, avatar y Medium.','Branding Maestrías EIG en Style y Dynamic en Delivery.','Las escenas coinciden con el storyboard.','Ajustes manuales hechos en Edit.','Título igual al de la clase, sin logo de Synthesia y con el enlace abierto (lo pide el cierre).'],
    links:[['Synthesia',L.synthesia],['Instructivo: Skill Storyboard Videos',L.insVideo]]},
   {t:'Video del profesor', r:'El docente graba; video edita y agrega las cortinillas.',
@@ -533,8 +652,8 @@ const RECURSOS = [
   ['Skills de Diseño (oct. 2026)','d','Guía de skills','Etapas 4, 6, 7 y 8',doc('1_qPRzkYvBqMxHnKr_E5BVQGScgVvN0AOB4I6Xlc-s-Y')],
   ['Plantilla carpeta Fábrica','d','Plantilla','Etapa 3',L.carpetaFabrica],
   ['Recursos de diseño (carpeta)','d','Carpeta','Todas',L.recursosDiseno],
-  ['Plantillas de infografía · versión oct. 2026 (Affinity, Illustrator, Canva)','d','Plantilla','Etapa 7',L.plantInfografia],
-  ['Plantillas de infografía · versiones anteriores','d','Plantilla (histórico)','—',fol('1YL3B1ovPsHzyC5trhjT1f3Dn2T_EhcKw')],
+  ['Plantillas de infografía, versión oct. 2026 (Affinity, Illustrator, Canva)','d','Plantilla','Etapa 7',L.plantInfografia],
+  ['Plantillas de infografía, versiones anteriores','d','Plantilla (histórico)','—',fol('1YL3B1ovPsHzyC5trhjT1f3Dn2T_EhcKw')],
   ['Plantilla de infografía en Canva (enlace)','d','Plantilla','Etapa 7',doc('1Hlutadl2kFUriXnCNy6XipXTB2TmfyN0l9Y7IfL03Xg')],
   ['Fuentes tipográficas de infografías','d','Fuentes','Etapa 7',fol('1b5o5wYcwPelolRZFZjcv0K_JFU3bJwvp')],
   ['Referentes de infografía','d','Referencia','Etapa 7',doc('1TmBaFRpoE_Zl1j6Hzyzlq-ZTgnQdUz85vM37-rSQSyc')],
@@ -542,9 +661,9 @@ const RECURSOS = [
   ['Atajos Affinity vs. Illustrator','d','Guía','Etapas 7 y 9',fil('1uWfnRvdmLtFQDtynEzVb10QYFdKyWB2V')],
   ['Plantillas de banner (Affinity, Illustrator)','d','Plantilla','Etapa 9',L.plantBanner],
   ['Banco de imágenes','d','Carpeta','Etapas 4 y 8',fol('14k3l0gteUSzxnlua9Mm1GCfN8NhBwjuO')],
-  ['Fondos · C1 vino (34)','d','Imágenes','Clase 1',fol('1yW2cKeo9BjVhl9T-QI14-SVYitUkaOz7')],
-  ['Fondos · C2 beige (34)','d','Imágenes','Clase 2',fol('1XBxYqCBBXTB6rR2JMfnF_Wv_MSwoF7yQ')],
-  ['Fondos · C3 negro (34)','d','Imágenes','Clase 3',fol('1oApmwKgpEmhOo-XPfPw6LiYkxS5Ng_70')],
+  ['Fondos de la Clase 1, vino (34)','d','Imágenes','Clase 1',fol('1yW2cKeo9BjVhl9T-QI14-SVYitUkaOz7')],
+  ['Fondos de la Clase 2, beige (34)','d','Imágenes','Clase 2',fol('1XBxYqCBBXTB6rR2JMfnF_Wv_MSwoF7yQ')],
+  ['Fondos de la Clase 3, negro (34)','d','Imágenes','Clase 3',fol('1oApmwKgpEmhOo-XPfPw6LiYkxS5Ng_70')],
   ['Portadillas de Genially (Clases 1 a 3)','d','Imágenes','Etapa 4',fol('17T3IOlTIuc5BDFei-3aHI1XpJlalV71z')],
   ['Avatares','d','Imágenes','Etapas 4 y 8',fol('1gIlLQlNnfTF6tKRKbxyT0b5n-DgrkCE_')],
   ['Ilustraciones PNG','d','Imágenes','Etapas 4 y 8',fol('1dd1hCmrAoFQNJ3wp48yeENrZAiO-e2qS')],
@@ -558,10 +677,10 @@ const RECURSOS = [
   ['HeyGen vs. Synthesia','v','Referencia','Elección de herramienta',doc('1zRpqRmKBUZS83uyBKpObX7e7lk_N7hpRLS_5IbDsPbc')],
   ['Instructivo para profesores: cómo grabar su video','v','Instructivo (video)','Video del profesor',L.insVideoProfe],
   ['Guías de generación de contenido (carpeta)','l','Carpeta','Ingreso',L.guiasContenido],
-  ['Guía de generación de contenido · corta (23/10/2026)','l','Guía','Ingreso',fil('1YAMnCjkYPCbPkIvEQ7rX75IrLp4TCS8j')],
-  ['Guía de generación de contenido · larga (23/10/2026)','l','Guía','Ingreso',fil('1FXtQYGoar_csx3m77DLwn3VBODErf0im')],
+  ['Guía de generación de contenido corta (23/10/2026)','l','Guía','Ingreso',fil('1YAMnCjkYPCbPkIvEQ7rX75IrLp4TCS8j')],
+  ['Guía de generación de contenido larga (23/10/2026)','l','Guía','Ingreso',fil('1FXtQYGoar_csx3m77DLwn3VBODErf0im')],
   ['Comparativa de guías (oct. 2026)','l','Referencia','Ingreso',fil('1jFYBJuxYwC9B7g3ARbAEiNG_K-FvkJQ2')],
-  ['Guía de generación de contenido · abril 2026','l','Guía (histórico)','—',fil('1YZbSzwPbNwXDJl_aWdNkjfp6lyCNhmYf')],
+  ['Guía de generación de contenido de abril 2026','l','Guía (histórico)','—',fil('1YZbSzwPbNwXDJl_aWdNkjfp6lyCNhmYf')],
   ['Manual de identidad EIG Campus','l','Manual de marca','Todas las piezas',L.manualEIG],
   ['Lineamientos de marca UIDE (Academia)','l','Manual de marca','Todas las piezas',L.marcaUIDE],
   ['Colores de plantillas UIDE','l','Referencia','Todas las piezas',fil('1K98WWnAcOPxM9Tp82NszhqRb2iWMbMGq')],
@@ -583,137 +702,218 @@ const FAQ = [
   ['¿Dónde pido vacaciones?','Con el formato de solicitud de vacaciones de la biblioteca, y avisa a coordinación para pausarte en el dashboard.'],
 ];
 
+/* Ficha de cada paso: quién, qué entra, qué sale y plazo */
+const FICHAS = {
+  'ingreso':        {quien:'Diseño Instruccional y coordinación', entra:'Carpeta del curso', sale:'Materia registrada en el dashboard', plazo:'Según el Cronograma'},
+  'calidad-entrada':{quien:'Calidad', entra:'Materia nueva', sale:'Materia en la cola o devuelta', plazo:'Alerta a 1 día hábil sin movimiento'},
+  'cola':           {quien:'El dashboard, automático', entra:'Materia revisada', sale:'Materia asignada a una persona', plazo:'Empieza al asignarse'},
+  'diseno':         {quien:'Diseñador o diseñadora asignada', entra:'Los 6 documentos base', sale:'Recursos de las 3 clases y el banner', plazo:'3 días hábiles'},
+  'video':          {quien:'Editor asignado', entra:'Guiones y grabación del docente', sale:'6 videos', plazo:'1 día hábil'},
+  'cierre':         {quien:'Cualquier persona del equipo', entra:'Materia al 100 %', sale:'Materia Completada', plazo:'Al terminar la producción'},
+  'canvas':         {quien:'Quien hace el cargue', entra:'Materia Completada', sale:'Curso montado y verificado', plazo:'Antes del lanzamiento'},
+  'entrega':        {quien:'El dashboard, automático', entra:'Materia Completada con enlace del curso', sale:'Correo de entrega a UIDE', plazo:'Inmediato'},
+};
+
 /* =========================================================
    A partir de aquí no hace falta editar.
    ========================================================= */
-const SECCIONES = [
-  ['inicio','Inicio',''],['ingreso','Ingreso','1'],['calidad-entrada','Calidad de entrada','2'],['cola','Cola y asignación','3'],
-  ['diseno','Diseño','4a'],['video','Video','4b'],['cierre','Cierre','5'],['canvas','Cargue a Canvas','6'],['entrega','Entrega','7'],
-  ['recursos','Biblioteca de recursos',''],['lineamientos','Lineamientos',''],['faq','Preguntas frecuentes',''],
-];
+const PROCESO = [['inicio','Inicio',''],['ingreso','Ingreso','1'],['calidad-entrada','Calidad de entrada','2'],['cola','Cola y asignación','3'],
+  ['diseno','Diseño','4a'],['video','Video','4b'],['cierre','Cierre','5'],['canvas','Cargue a Canvas','6'],['entrega','Entrega','7']];
+const CONSULTA = [['recursos','Biblioteca de recursos'],['lineamientos','Lineamientos'],['faq','Preguntas frecuentes']];
+const ORDEN = [...PROCESO.map(p=>p[0]), ...CONSULTA.map(c=>c[0])];
+const PASOS = [['ingreso','1','Ingreso'],['calidad-entrada','2','Calidad'],['cola','3','Cola'],['diseno','4','Producción'],['cierre','5','Cierre'],['canvas','6','Canvas'],['entrega','7','Entrega']];
+
+const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ext = (txt,url) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(txt)}</a>`;
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const EXT = '<svg class="ext" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2L7 9M12 9.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CHEV = '<svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ext = (txt,url,cls='') => `<a class="${cls}" href="${esc(url)}" target="_blank" rel="noopener">${esc(txt)}${EXT}<span class="sr"> (abre en otra pestaña)</span></a>`;
 
-// Índice
-document.getElementById('toc').innerHTML = SECCIONES.map(([id,t,n]) =>
-  `<li><a href="#${id}" data-id="${id}"><span class="n">${n}</span>${esc(t)}</a></li>`).join('');
-document.getElementById('quick').innerHTML = ACCESOS.map(([t,u]) => ext(t,u)).join('');
-document.getElementById('heroLinks').innerHTML =
-  `<a class="btn solid" href="${L.dashboard}" target="_blank" rel="noopener">Abrir el dashboard</a>` +
-  `<a class="btn" href="${L.driveRaiz}" target="_blank" rel="noopener">Abrir el Drive</a>` +
-  `<a class="btn" href="#recursos">Ver la biblioteca</a>`;
-document.getElementById('lnkProceso').href = L.insProceso;
-document.getElementById('lnkProceso').target = '_blank';
+/* Navegación lateral */
+$('navProceso').innerHTML = PROCESO.map(([id,t,n]) => `<li><a href="#${id}" data-v="${id}"><span class="n">${n}</span>${esc(t)}</a></li>`).join('');
+$('navConsulta').innerHTML = CONSULTA.map(([id,t]) => `<li><a href="#${id}" data-v="${id}"><span class="n"></span>${esc(t)}</a></li>`).join('');
+$('quick').innerHTML = ACCESOS.map(([t,u]) => ext(t,u)).join('');
+$('heroLinks').innerHTML = `<a class="btn solid" href="${L.dashboard}" target="_blank" rel="noopener">Abrir el dashboard${EXT}</a><a class="btn" href="${L.driveRaiz}" target="_blank" rel="noopener">Abrir el Drive${EXT}</a>`;
+$('lnkProceso').href = L.insProceso;
 
-// Etapas
+/* Barra de avance, ficha y anterior/siguiente en cada página */
+const TITULOS = Object.fromEntries([...PROCESO.map(p=>[p[0],p[1]]), ...CONSULTA]);
+document.querySelectorAll('section.view').forEach(sec => {
+  const id = sec.id, h2 = sec.querySelector('h2');
+  if (sec.dataset.paso) {
+    const actual = +sec.dataset.paso;
+    const ol = document.createElement('ol'); ol.className = 'steps'; ol.setAttribute('aria-label','Pasos del proceso');
+    ol.innerHTML = PASOS.map(([pid,n,t]) => {
+      const num = +n, cls = num < actual ? 'done' : num === actual ? 'now' + (id==='video'?' v':'') : '';
+      const href = num === 4 ? (id==='video' ? 'video' : 'diseno') : pid;
+      const label = num === 4 && actual === 4 ? (id==='video' ? 'Video' : 'Diseño') : t;
+      return `<li class="${cls}"><a href="#${href}"${num===actual?' aria-current="step"':''}><b>${n}</b>${esc(label)}${num===actual?` <span class="sr">, paso ${n} de 7</span>`:''}</a></li>`;
+    }).join('');
+    sec.insertBefore(ol, h2);
+  }
+  const f = FICHAS[id];
+  if (f) {
+    const dl = document.createElement('dl'); dl.className = 'ficha';
+    dl.innerHTML = [['Quién lo hace',f.quien],['Qué entra',f.entra],['Qué sale',f.sale],['Plazo',f.plazo]]
+      .map(([k,v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('');
+    sec.querySelector('.lead').after(dl);
+  }
+  const i = ORDEN.indexOf(id), prev = ORDEN[i-1], next = ORDEN[i+1];
+  if (id !== 'inicio') {
+    const nav = document.createElement('nav'); nav.className = 'pager'; nav.setAttribute('aria-label','Página anterior y siguiente');
+    nav.innerHTML = (prev ? `<a href="#${prev}"><small>Anterior</small><b>${esc(TITULOS[prev])}</b></a>` : '<span></span>') +
+                    (next ? `<a class="next" href="#${next}"><small>Siguiente</small><b>${esc(TITULOS[next])}</b></a>` : '');
+    sec.appendChild(nav);
+  }
+});
+
+/* Tablas: etiqueta de cada celda para la vista en celular */
+document.querySelectorAll('.tbl table').forEach(t => {
+  const heads = [...t.querySelectorAll('thead th')].map(th => th.textContent);
+  t.querySelectorAll('tbody tr').forEach(tr => [...tr.children].forEach((td,i) => td.setAttribute('data-label', heads[i] || '')));
+});
+
+/* Etapas */
 function etapaHTML(e, i, tipo){
   const id = (tipo==='v'?'video-':'diseno-') + (i+1);
-  const lista = (arr, cls) => arr && arr.length ? `<ul${cls?` class="${cls}"`:''}>${arr.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : '';
+  const lista = (arr, tag, cls) => `<${tag}${cls?` class="${cls}"`:''}>${arr.map(x=>`<li>${esc(x)}</li>`).join('')}</${tag}>`;
   return `<details class="stage ${tipo}" id="${id}">
-    <summary><span class="badge">${i+1}</span><div><h4>${esc(e.t)}${e.pendiente?` <span class="pending">${esc(e.pendienteTxt||'Detalle por documentar')}</span>`:''}</h4><p>${esc(e.r)}</p></div><span class="chev" aria-hidden="true">›</span></summary>
+    <summary><span class="badge">${i+1}</span><div><h4>${esc(e.t)}${e.pendiente?` <span class="pending">${esc(e.pendienteTxt||'Detalle por documentar')}</span>`:''}</h4><p>${esc(e.r)}</p></div>${CHEV}</summary>
     <div class="body">
       <dl class="kv"><dt>Herramienta</dt><dd>${esc(e.herr)}</dd><dt>Entrada</dt><dd>${esc(e.ent)}</dd><dt>Resultado</dt><dd>${esc(e.res)}</dd></dl>
-      ${e.pasos && e.pasos.length ? '<strong>Pasos</strong>'+lista(e.pasos) : ''}
-      ${e.check && e.check.length ? '<strong>Antes de avanzar</strong>'+lista(e.check,'check') : ''}
+      ${e.pasos && e.pasos.length ? '<h5>Pasos</h5>'+lista(e.pasos,'ol') : ''}
+      ${e.check && e.check.length ? '<h5>Antes de avanzar</h5>'+lista(e.check,'ul','check') : ''}
       ${e.nota ? `<div class="note">${esc(e.nota)}</div>` : ''}
       ${e.links && e.links.length ? `<div class="links">${e.links.map(([t,u])=>ext(t,u)).join('')}</div>` : ''}
     </div></details>`;
 }
-document.getElementById('stagesD').innerHTML = ETAPAS_DISENO.map((e,i)=>etapaHTML(e,i,'d')).join('');
-document.getElementById('stagesV').innerHTML = ETAPAS_VIDEO.map((e,i)=>etapaHTML(e,i,'v')).join('');
-document.getElementById('entregablesD').innerHTML = ENTREGABLES_DISENO.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join('');
+$('stagesD').innerHTML = ETAPAS_DISENO.map((e,i)=>etapaHTML(e,i,'d')).join('');
+$('stagesV').innerHTML = ETAPAS_VIDEO.map((e,i)=>etapaHTML(e,i,'v')).join('');
+$('entregablesD').innerHTML = ENTREGABLES_DISENO.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join('');
+document.querySelectorAll('[data-toggle]').forEach(btn => {
+  const box = $(btn.dataset.toggle);
+  const sync = () => { const all = [...box.querySelectorAll('details')].every(d=>d.open); btn.textContent = all ? 'Cerrar todas' : 'Abrir todas'; };
+  btn.addEventListener('click', () => { const abrir = btn.textContent === 'Abrir todas'; box.querySelectorAll('details').forEach(d=>d.open=abrir); sync(); });
+  box.addEventListener('toggle', sync, true);
+});
 
-// Lineamientos
-document.getElementById('lineLinks').innerHTML = RECURSOS.filter(r=>r[1]==='l' && !/histórico/.test(r[2])).map(r=>ext(r[0],r[4])).join('');
+/* Enlaces de lineamientos tomados de la biblioteca */
+document.querySelectorAll('a[data-rec]').forEach(a => {
+  const r = RECURSOS.find(x => x[0] === a.dataset.rec);
+  if (r) { a.href = r[4]; a.target = '_blank'; a.rel = 'noopener'; } else { a.replaceWith(document.createTextNode(a.textContent)); }
+});
 
-// FAQ
-document.getElementById('faqList').innerHTML = FAQ.map(([q,a],i)=>`<details class="faq" id="faq-${i+1}"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
+/* Preguntas frecuentes */
+$('faqList').innerHTML = FAQ.map(([q,a],i)=>`<details class="faq" id="faq-${i+1}"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
 
-// Biblioteca
-const FRENTES = {todos:'Todos', d:'Diseño', v:'Video', l:'Lineamientos', e:'Equipo y herramientas'};
+/* Biblioteca */
+const FRENTES = {d:'Diseño', v:'Video', l:'Lineamientos', e:'Equipo y herramientas'};
+const COLOR = {d:'var(--accent)', v:'var(--video)', l:'var(--beige)', e:'var(--muted)'};
 let frente = 'todos';
-const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-document.getElementById('chips').innerHTML = Object.entries(FRENTES).map(([k,t]) =>
-  `<button class="chip" data-f="${k}" aria-pressed="${k==='todos'}">${esc(t)}</button>`).join('');
+$('chips').innerHTML = [['todos','Todos'],...Object.entries(FRENTES)].map(([k,t]) =>
+  `<button class="chip" type="button" data-f="${k}" aria-pressed="${k==='todos'}">${esc(t)}</button>`).join('');
 function pintarBiblioteca(){
-  const q = norm(document.getElementById('libq').value.trim());
-  const filas = RECURSOS.filter(r => (frente==='todos'||r[1]===frente) && (!q || norm(r.join(' ')).includes(q)));
-  document.getElementById('lib').innerHTML = filas.length ? filas.map((r,i) =>
-    `<tr id="rec-${RECURSOS.indexOf(r)}"><td>${ext(r[0],r[4])}</td><td><span class="tag ${r[1]}">${esc(FRENTES[r[1]])}</span></td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')
-    : `<tr><td colspan="4">Ningún recurso coincide. Prueba con otra palabra o elige «Todos».</td></tr>`;
-  document.getElementById('libcount').textContent = `${filas.length} de ${RECURSOS.length} recursos`;
+  const q = norm($('libq').value.trim());
+  let total = 0;
+  const html = Object.keys(FRENTES).filter(k => frente==='todos' || k===frente).map(k => {
+    const filas = RECURSOS.filter(r => r[1]===k && (!q || norm(r.join(' ')).includes(q)));
+    total += filas.length;
+    if (!filas.length) return '';
+    return `<div class="libgroup"><h3><i style="background:${COLOR[k]}"></i>${esc(FRENTES[k])}</h3><div class="reshead" aria-hidden="true"><span>Recurso</span><span>Tipo</span><span>Se usa en</span></div><ul class="reslist">${
+      filas.map(r => `<li id="rec-${RECURSOS.indexOf(r)}">${ext(r[0],r[4])}<span class="tipo">${esc(r[2])}</span><span class="uso">${r[3]==='—'?'':esc(r[3])}</span></li>`).join('')
+    }</ul></div>`;
+  }).join('');
+  $('lib').innerHTML = html || '<p class="empty">Ningún recurso coincide. Prueba con otra palabra o elige «Todos».</p>';
+  $('libcount').textContent = `${total} de ${RECURSOS.length} recursos`;
 }
-document.getElementById('chips').addEventListener('click', ev => {
+$('chips').addEventListener('click', ev => {
   const b = ev.target.closest('.chip'); if(!b) return;
   frente = b.dataset.f;
   document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c===b));
   pintarBiblioteca();
 });
-document.getElementById('libq').addEventListener('input', pintarBiblioteca);
+$('libq').addEventListener('input', pintarBiblioteca);
 pintarBiblioteca();
 
-// Buscador general
-const INDICE = [];
-SECCIONES.forEach(([id,t]) => { const s=document.getElementById(id); if(s) INDICE.push({t, ctx:'Sección', txt:norm(s.innerText), el:id}); });
-ETAPAS_DISENO.forEach((e,i)=>INDICE.push({t:`Etapa ${i+1} · ${e.t}`, ctx:'Diseño', txt:norm(JSON.stringify(e)), el:'diseno-'+(i+1), open:true}));
-ETAPAS_VIDEO.forEach((e,i)=>INDICE.push({t:e.t, ctx:'Video', txt:norm(JSON.stringify(e)), el:'video-'+(i+1), open:true}));
-RECURSOS.forEach((r,i)=>INDICE.push({t:r[0], ctx:'Recurso · '+FRENTES[r[1]], txt:norm(r.slice(0,4).join(' ')), url:r[4]}));
-FAQ.forEach(([q,a],i)=>INDICE.push({t:q, ctx:'Pregunta frecuente', txt:norm(q+' '+a), el:'faq-'+(i+1), open:true}));
+/* Páginas: una sección a la vez, según el #enlace */
+const views = [...document.querySelectorAll('section.view')];
+function mostrar(){
+  const hash = decodeURIComponent(location.hash.slice(1)) || 'inicio';
+  let target = document.getElementById(hash);
+  let sec = target && (target.matches('section.view') ? target : target.closest('section.view'));
+  if (!sec) { sec = $('inicio'); target = sec; }
+  views.forEach(v => v.classList.toggle('on', v === sec));
+  document.querySelectorAll('.navgroup a[data-v]').forEach(a => a.toggleAttribute('aria-current', false));
+  const act = document.querySelector(`.navgroup a[data-v="${sec.id}"]`); if (act) act.setAttribute('aria-current','page');
+  document.title = (sec.id==='inicio' ? '' : sec.dataset.titulo + ' · ') + 'Fábrica de Producción';
+  if (target !== sec) {
+    if (target.tagName === 'DETAILS') target.open = true;
+    requestAnimationFrame(() => { target.scrollIntoView({block:'start'}); target.classList.remove('flash'); void target.offsetWidth; target.classList.add('flash'); });
+  } else {
+    window.scrollTo(0,0); requestAnimationFrame(() => window.scrollTo(0,0));
+    const h = sec.querySelector('h1,h2'); if (h && mostrar.listo) h.focus({preventScroll:true});
+  }
+  mostrar.listo = true;
+  cerrarMenu();
+}
+window.addEventListener('hashchange', mostrar);
 
-const qIn = document.getElementById('q'), res = document.getElementById('results');
+/* Buscador general */
+const INDICE = [];
+views.forEach(s => INDICE.push({t:s.dataset.titulo, ctx:'Página', txt:norm(s.textContent), el:s.id}));
+ETAPAS_DISENO.forEach((e,i)=>INDICE.push({t:`Etapa ${i+1}: ${e.t}`, ctx:'Diseño', txt:norm(JSON.stringify(e)), el:'diseno-'+(i+1)}));
+ETAPAS_VIDEO.forEach((e,i)=>INDICE.push({t:e.t, ctx:'Video', txt:norm(JSON.stringify(e)), el:'video-'+(i+1)}));
+RECURSOS.forEach(r=>INDICE.push({t:r[0], ctx:'Archivo de '+FRENTES[r[1]].toLowerCase()+', abre en Drive', txt:norm(r.slice(0,4).join(' ')), url:r[4]}));
+FAQ.forEach(([q,a],i)=>INDICE.push({t:q, ctx:'Pregunta frecuente', txt:norm(q+' '+a), el:'faq-'+(i+1)}));
+const qIn = $('q'), res = $('results');
 qIn.addEventListener('input', () => {
   const words = norm(qIn.value.trim()).split(/\s+/).filter(Boolean);
   if(!words.length){ res.classList.remove('on'); res.innerHTML=''; return; }
-  const hits = INDICE.map(x => ({x, score: words.every(w=>x.txt.includes(w)) ? (words.every(w=>norm(x.t).includes(w))?2:1) : 0}))
-    .filter(h=>h.score).sort((a,b)=>b.score-a.score).slice(0,12);
-  res.innerHTML = hits.length ? hits.map(({x},i) => x.url
-      ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.t)}<small>${esc(x.ctx)} · abre en Drive</small></a>`
-      : `<a href="#${x.el}" data-open="${x.open?1:0}">${esc(x.t)}<small>${esc(x.ctx)}</small></a>`).join('')
+  const hits = INDICE.map(x => ({x, s: words.every(w=>x.txt.includes(w)) ? (words.every(w=>norm(x.t).includes(w)) ? 3 : x.ctx==='Página' ? 1 : 2) : 0}))
+    .filter(h=>h.s).sort((a,b)=>b.s-a.s).slice(0,12);
+  res.innerHTML = hits.length ? hits.map(({x}) => x.url
+      ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.t)}<small>${esc(x.ctx)}</small></a>`
+      : `<a href="#${x.el}">${esc(x.t)}<small>${esc(x.ctx)}</small></a>`).join('')
     : '<p>Sin resultados. Prueba con otra palabra, por ejemplo «banner» o «Synthesia».</p>';
   res.classList.add('on');
 });
 res.addEventListener('click', ev => {
   const a = ev.target.closest('a[href^="#"]'); if(!a) return;
-  const el = document.getElementById(a.getAttribute('href').slice(1)); if(!el) return;
-  if(a.dataset.open==='1' && el.tagName==='DETAILS') el.open = true;
-  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
-  cerrarMenu();
+  if (a.getAttribute('href') === location.hash) { ev.preventDefault(); mostrar(); }
+  qIn.value=''; res.classList.remove('on');
+});
+document.addEventListener('keydown', ev => {
+  if (ev.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { ev.preventDefault(); if (innerWidth<=860) abrirMenu(); qIn.focus(); }
+  if (ev.key === 'Escape') { if (res.classList.contains('on')) { qIn.value=''; res.classList.remove('on'); } else cerrarMenu(); }
 });
 
-// Modo claro / oscuro
-const themeBtn = document.getElementById('themeBtn');
+/* Modo claro / oscuro */
 const temaActual = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
 function pintarBotonTema(){
   const oscuro = temaActual() === 'dark';
-  themeBtn.innerHTML = oscuro ? '<span aria-hidden="true">☀️</span><span class="lbl"> Modo claro</span>' : '<span aria-hidden="true">🌙</span><span class="lbl"> Modo oscuro</span>';
-  themeBtn.setAttribute('aria-label', oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+  $('themeBtn').innerHTML = oscuro ? '<span aria-hidden="true">☀️</span> Modo claro' : '<span aria-hidden="true">🌙</span> Modo oscuro';
+  document.querySelector('.mb-theme').textContent = oscuro ? '☀️' : '🌙';
 }
-themeBtn.addEventListener('click', () => {
+function cambiarTema(){
   const nuevo = temaActual() === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', nuevo);
   try { localStorage.setItem('tema', nuevo); } catch(e) {}
   pintarBotonTema();
-});
+}
+$('themeBtn').addEventListener('click', cambiarTema);
+document.querySelector('.mb-theme').addEventListener('click', cambiarTema);
 pintarBotonTema();
 
-// Menú móvil
-const side = document.getElementById('side'), mb = document.getElementById('menuBtn');
+/* Menú en celular */
+const side = $('side'), mb = $('menuBtn');
+function abrirMenu(){ side.classList.add('open'); mb.setAttribute('aria-expanded','true'); }
 function cerrarMenu(){ side.classList.remove('open'); mb.setAttribute('aria-expanded','false'); }
-mb.addEventListener('click', () => { const o = side.classList.toggle('open'); mb.setAttribute('aria-expanded', o); });
-document.getElementById('toc').addEventListener('click', e => { if(e.target.closest('a')) cerrarMenu(); });
+mb.addEventListener('click', () => side.classList.contains('open') ? cerrarMenu() : abrirMenu());
+document.addEventListener('click', ev => { if (side.classList.contains('open') && !side.contains(ev.target) && ev.target !== mb) cerrarMenu(); });
 
-// Sección activa en el índice
-const tocLinks = [...document.querySelectorAll('#toc a')];
-const obs = new IntersectionObserver(ents => ents.forEach(en => {
-  if(en.isIntersecting) tocLinks.forEach(a => a.classList.toggle('act', a.dataset.id===en.target.id));
-}), {rootMargin:'-20% 0px -70% 0px'});
-SECCIONES.forEach(([id]) => { const s=document.getElementById(id); if(s) obs.observe(s); });
-
-// Abrir una etapa si el enlace llega con #diseno-3, etc.
-function abrirHash(){ const el = location.hash && document.getElementById(location.hash.slice(1)); if(el && el.tagName==='DETAILS') el.open = true; }
-window.addEventListener('hashchange', abrirHash); abrirHash();
-
-document.getElementById('pie').innerHTML = `Fábrica de Producción · UIDE Maestrías. Actualizado el ${ACTUALIZADO}. Fuente: Drive de la Fábrica e instructivos del equipo.`;
+$('pie').textContent = `Fábrica de Producción de UIDE Maestrías. Actualizado el ${ACTUALIZADO}.`;
+mostrar();
 </script>
 </body>
 </html>

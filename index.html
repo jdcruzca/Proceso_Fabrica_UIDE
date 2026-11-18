@@ -216,6 +216,52 @@ details.faq summary::after{content:"+";color:var(--muted);font-weight:400;font-s
 details.faq[open] summary::after{content:"–"}
 details.faq p{margin:8px 0 0;color:var(--ink)}
 
+/* Escuchar el resumen */
+.listen{display:inline-flex;align-items:center;gap:8px;margin:18px 0 0;font:inherit;font-size:15px;font-weight:700;padding:8px 14px 8px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.listen:hover{border-color:var(--accent)}
+.listen svg{width:18px;height:18px;flex-shrink:0}
+.listen[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.listen[aria-pressed="true"] .wave{animation:pulso 1s ease-in-out infinite}
+@keyframes pulso{50%{opacity:.25}}
+.hero .listen{margin-top:20px}
+
+/* Pregúntame */
+.ask-fab{position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:25;display:inline-flex;align-items:center;gap:10px;padding:9px 18px 9px 9px;border-radius:99px;border:2px solid var(--fill);background:var(--surface);color:var(--ink);font:700 16px/1 "Atkinson Hyperlegible",sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.ask-fab:hover{filter:brightness(1.06)}
+.ask-fab[aria-expanded="true"]{display:none}
+.qmark{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--fill);color:var(--on-fill);font:700 16px/1 "Bricolage Grotesque",sans-serif;flex-shrink:0}
+.ask-panel{position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:26;width:min(420px,calc(100vw - 32px));max-height:min(680px,calc(100vh - 44px));display:flex;flex-direction:column;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);overflow:hidden}
+.ask-panel[hidden]{display:none}
+.ask-head{display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;background:var(--fill);color:var(--on-fill)}
+.ask-head .qmark{background:var(--on-fill);color:var(--fill)}
+.ask-head h2{font:700 19px/1.2 "Bricolage Grotesque",sans-serif}
+.ask-head p{margin:2px 0 0;font-size:14px;opacity:.9}
+.ask-close{margin-left:auto;background:none;border:0;color:inherit;font-size:26px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:6px}
+.ask-close:hover{background:rgba(255,255,255,.15)}
+.ask-form{display:flex;gap:8px;padding:14px 14px 6px}
+.ask-form input{flex:1;min-width:0;font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.ask-form button{font:700 15px/1 "Atkinson Hyperlegible",sans-serif;padding:0 14px;border-radius:8px;border:0;background:var(--fill);color:var(--on-fill);cursor:pointer}
+.ask-body{overflow:auto;padding:6px 14px 10px;flex:1}
+.ask-cat{margin-top:12px}
+.ask-cat h3{font:700 13.5px/1.3 "Atkinson Hyperlegible",sans-serif;color:var(--muted);margin:0 0 6px}
+.ask-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ask-chip{font:inherit;font-size:14.5px;line-height:1.3;text-align:left;padding:7px 12px;border-radius:16px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.ask-chip:hover{border-color:var(--accent)}
+.ask-back{font:inherit;font-size:14.5px;background:none;border:0;color:var(--accent);cursor:pointer;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.ask-q{font:600 18px/1.3 "Bricolage Grotesque",sans-serif;margin:8px 0 6px}
+.ask-a{margin:0;font-size:16px;line-height:1.55}
+.ask-go{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.ask-go a{display:inline-flex;align-items:center;font-size:14.5px;font-weight:700;padding:7px 12px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.ask-go a.main{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.ask-go a:hover{filter:brightness(1.06)}
+.ask-note{font-size:14.5px;color:var(--muted);margin:10px 0 6px}
+.ask-foot{margin:0;padding:10px 14px 12px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+main{padding-bottom:110px}
+@media (max-width:600px){
+  .ask-fab{right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));font-size:15px}
+  .ask-panel{right:0;left:0;bottom:0;width:100%;max-height:88vh;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+}
+
 footer{margin-top:56px;color:var(--muted);font-size:13.5px;max-width:var(--wide)}
 .flash{animation:flash 1.6s ease}
 @keyframes flash{0%,40%{background:var(--soft)}100%{background:transparent}}
@@ -508,11 +554,19 @@ footer{margin-top:56px;color:var(--muted);font-size:13.5px;max-width:var(--wide)
 </main>
 </div>
 
+<button class="ask-fab" id="askFab" type="button" aria-expanded="false" aria-controls="askPanel"><span class="qmark" aria-hidden="true">?</span>Pregúntame</button>
+<div class="ask-panel" id="askPanel" role="dialog" aria-labelledby="askTitle" hidden>
+  <div class="ask-head"><span class="qmark" aria-hidden="true">?</span><div><h2 id="askTitle">Pregúntame</h2><p>Sobre el proceso de la Fábrica</p></div><button class="ask-close" id="askClose" type="button" aria-label="Cerrar Pregúntame">×</button></div>
+  <form class="ask-form" id="askForm"><label for="askIn" class="sr">Escribe tu pregunta</label><input id="askIn" type="text" placeholder="Ej.: ¿qué hago si los documentos no coinciden?" autocomplete="off"><button type="submit">Preguntar</button></form>
+  <div class="ask-body" id="askBody" aria-live="polite"></div>
+  <p class="ask-foot">Respondo con lo que está en este portal sobre el proceso de la Fábrica. No soy una IA de uso general.</p>
+</div>
+
 <script>
 /* =========================================================
    DATOS — edita aquí. Todo lo demás se arma solo.
    ========================================================= */
-const ACTUALIZADO = '17 de noviembre de 2026';
+const ACTUALIZADO = '18 de noviembre de 2026';
 
 const fol = id => 'https://drive.google.com/drive/folders/' + id;
 const fil = id => 'https://drive.google.com/file/d/' + id + '/view';
@@ -530,6 +584,7 @@ const L = {
   skillHTML: 'https://chatgpt.com/skills?skill_id=6aedd8c0c39c8191a1311c176bc75497',
   skillGuionInfo: 'https://chatgpt.com/skills?skill_id=6aec8673d42c81918348d4ba60a27e69',
   skillGuionGenially: 'https://chatgpt.com/skills?skill_id=6abe8c79e4088191bd9262fb898e82a2',
+  canvasEIG: 'https://eigcampus.instructure.com/courses/3751/modules',
   skillImagenes: 'https://chatgpt.com/skills?skill_id=6a85b70430688191bcf3f18b9a54f87c',
   skillVideo: 'https://chatgpt.com/skills?skill_id=6ac3ed06d2a08191a4499a37976c5426',
   // Instructivos del Drive
@@ -582,26 +637,29 @@ const ETAPAS_DISENO = [
    pasos:['Carga el Documento de Clase 1, pide que valide los temas y genera un guion por tema. Repite con las Clases 2 y 3.','En Genially, dentro de «Fábrica de contenidos», crea la carpeta de la asignatura con Clase 1, 2 y 3.','Duplica las plantillas en la carpeta de cada clase.','Para cada guion: incorpora textos e imágenes, revisa navegación e interactividad y confirma que sea fiel al guion.'],
    check:['Cada Genially está completo y revisado.','Está en la carpeta de su clase.','Está listo para publicar.'],
    links:[['Skill Guiones Geniallys',L.skillGuionGenially],['Descargar ChatGPT (escritorio)',L.chatgptApp],['Carpeta del equipo en Genially',L.genially],['Instructivo: Geniallys',L.insGenially]]},
-  {t:'Enlaces embebidos', r:'Reúne los enlaces de los Genially publicados.',
-   herr:'Genially + Drive', ent:'Los Genially terminados.', res:'3 documentos de links (uno por clase), en Drive y en tu carpeta Asignatura.',
-   pasos:['Publica cada Genially y copia su enlace o código de inserción.','Pégalo en el documento de links de su clase, indicando el tema.','Descarga los 3 documentos a tu carpeta Asignatura.'],
-   check:['Cada enlace corresponde al Genially correcto.'],
-   links:[]},
-  {t:'HTML', r:'Un HTML por tema, con espacios para imágenes y sus prompts.',
-   herr:'Skill HTML Canvas', ent:'Documento de Clase + documento de links de la misma clase.', res:'Un HTML por tema, con placeholders de imagen y los prompts para generarlas.',
-   pasos:['Carga el Documento de Clase 1 y el documento de links de la Clase 1.','Genera los HTML: uno por tema, con placeholders para las imágenes.','Copia los prompts de imagen en la carpeta de imágenes de la clase en Drive.','Repite con las Clases 2 y 3.'],
-   check:['Hay un HTML por tema.','Cada placeholder tiene su prompt guardado.'],
-   links:[['Skill HTML Canvas',L.skillHTML],['Instructivo: HTML',L.insHTML]]},
+  {t:'Enlaces embebidos', r:'Reúne en un documento por clase los enlaces de los Genially publicados.',
+   herr:'Genially + Drive', ent:'Los Genially terminados de cada clase.', res:'Links Genially Clase 1, 2 y 3, en Drive dentro de la carpeta de Geniallys y descargados en tu carpeta Asignatura.',
+   pasos:['Publica cada Genially según el procedimiento establecido.','Copia su enlace o código de inserción (iframe).','Pégalo en el documento de links de su clase, indicando a qué tema pertenece.','Cuando estén los tres documentos, descárgalos a tu carpeta Asignatura.'],
+   check:['Cada enlace corresponde al Genially y al tema correctos.'],
+   nota:'Un enlace mal asociado termina en el HTML equivocado. Revisa los documentos de links antes de pasar a ChatGPT.',
+   links:[['Instructivo: HTML (sección 2)',L.insHTML]]},
+  {t:'HTML', r:'Un HTML por tema, aprobado en Canvas, con los prompts de sus imágenes.',
+   herr:'Skill HTML para Canvas (ChatGPT, pestaña Work)', ent:'Una clase a la vez: el Documento de Clase y su documento de links de Genially.', res:'Un HTML por tema, con placeholders de imagen, y los prompts para generar esas imágenes.',
+   pasos:['En ChatGPT, abre un chat nuevo en la pestaña Work. Con el botón (+) de la barra de escritura, elige la skill HTML para Canvas.','Carga el Documento de Clase 1 y el documento de links de la Clase 1.','Revisa el mapa maestro: los temas, los 4 apartados internos de cada HTML, el Genially de cada uno y los recursos adicionales encontrados (tablas, imágenes, códigos, figuras o anexos). Apruébalo solo si todo está bien: es la guía de todo el proceso.','La skill genera los HTML uno a uno, con espacios reservados para las imágenes (placeholders).','Carga cada HTML en Canvas y revisa: título exacto al del documento, Genially correcto y con el mismo título, y recursos adicionales bien ubicados y fieles al documento. Si algo falla, pide la corrección en el mismo chat.','Escribe «Aprobado» para que la skill entregue los prompts de imagen de ese HTML. Pégalos en el documento de su tema, en la carpeta de imágenes de la clase en Drive.','Escribe «continúa» para pasar al siguiente HTML. Repite hasta terminar la clase.','Haz la Clase 2 y la Clase 3 en chats distintos.'],
+   check:['Cada clase tiene un HTML por tema.','Cada HTML tiene el Genially correcto de su tema.','Cada placeholder tiene su prompt de imagen.','Los prompts están guardados en la carpeta de imágenes de cada clase.'],
+   nota:'No mezcles clases en la misma conversación: así ningún HTML toma información de otra clase.',
+   links:[['Skill HTML para Canvas',L.skillHTML],['Canvas EIG',L.canvasEIG],['Instructivo: HTML',L.insHTML]]},
   {t:'Infografías', r:'Una infografía por clase.',
    herr:'Affinity (guion con la skill Guiones Infografías)', ent:'El guion de infografía de cada clase y la plantilla vigente.', res:'3 infografías (PDF + editable).',
    pasos:['Identifica el guion de la clase y abre la plantilla en Affinity.','Construye la infografía con el guion y el estilo gráfico del proyecto.','Revisa contenido, diagramación y jerarquía visual.','Exporta, guarda en tu carpeta Asignatura y sube PDF y editable a la carpeta de infografías de cada clase.'],
    check:['Hay 3 infografías, una por clase.','El PDF y el editable están en Drive.'],
    links:[['Skill Guiones Infografías',L.skillGuionInfo],['Plantillas de infografía (oct. 2026)',L.plantInfografia],['Instructivo: Infografías y Banner',L.insInfoBanner]]},
-  {t:'Imágenes para los HTML', r:'Una imagen por cada placeholder.',
-   herr:'Skill Generador de imágenes', ent:'Los prompts que dejó la etapa de HTML.', res:'Una imagen por placeholder.',
-   pasos:['Identifica la clase, el tema y el apartado de cada prompt.','Genera la imagen y revisa que represente bien el contenido.','Guárdala con la convención de nombres del equipo en su carpeta.','Repite hasta completar las 3 clases.'],
-   check:['Cada placeholder tiene su imagen: generada, revisada, bien nombrada y en su carpeta.'],
-   links:[['Skill Generador de imágenes',L.skillImagenes],['Instructivo: Imágenes',L.insImagenes]]},
+  {t:'Imágenes para los HTML', r:'Las imágenes de cada HTML, generadas en lote a partir de sus prompts.',
+   herr:'Skill Image Batch Generator (ChatGPT, pestaña Work)', ent:'Los documentos de prompts de imagen que dejó la etapa de HTML.', res:'Un archivo .zip con las 5 imágenes de cada HTML, ya nombradas.',
+   pasos:['Descarga los documentos de prompts de la carpeta de imágenes de la clase.','En ChatGPT, abre un chat nuevo en la pestaña Work. Con el botón (+), elige la skill Image Batch Generator.','Carga el documento de prompts.','Cuando termine, descarga el .zip y revisa que las imágenes estén completas y bien nombradas.','Súbelas a la carpeta renders, dentro de la carpeta de imágenes de la clase: cada conjunto en su propia carpeta, con el nombre de su tema.','Repite hasta completar las tres clases.'],
+   check:['Cada imagen salió de su prompt y representa bien el contenido.','Está nombrada con la convención del equipo.','Está asociada a su placeholder: clase, tema y apartado.','Está guardada en la carpeta de imágenes de su clase.','Ningún HTML quedó con un placeholder sin imagen.'],
+   nota:'Trabaja una clase a la vez y en el orden de los temas: así es más fácil saber qué placeholder corresponde a cada imagen.',
+   links:[['Skill Image Batch Generator',L.skillImagenes],['Instructivo: Imágenes',L.insImagenes]]},
   {t:'Banner', r:'El banner de la asignatura.',
    herr:'Affinity', ent:'Nombre de la asignatura y de la maestría + plantilla de banner.', res:'1 banner en PNG + editable.',
    pasos:['Confirma los nombres vigentes de la asignatura y la maestría.','Crea el banner con la plantilla, respetando dimensiones y lineamientos.','Revisa composición, legibilidad y coherencia visual.','Exporta en PNG y sube PNG y editable a la carpeta Fábrica.','Registra el trabajo con el timer «Creación de banner»: así el dashboard lo da por hecho en el cierre.'],
@@ -616,7 +674,7 @@ const ETAPAS_DISENO = [
 const ENTREGABLES_DISENO = [
   ['Documentos de Clase validados','3'],['Documentos “Qué hemos aprendido” validados','3'],['Estructuras Canvas','3'],
   ['Guiones de Genially','1 por tema'],['Genially terminados','1 por tema'],['Documentos de enlaces embebidos','3'],
-  ['HTML','1 por tema'],['Prompts de imagen','1 por placeholder'],['Imágenes','1 por placeholder'],
+  ['HTML','1 por tema'],['Prompts de imagen','1 por placeholder'],['Imágenes','5 por HTML (1 por placeholder)'],
   ['Infografías','3'],['Banner de la asignatura','1'],
 ];
 
@@ -714,6 +772,61 @@ const FICHAS = {
   'entrega':        {quien:'El dashboard, automático', entra:'Materia Completada con enlace del curso', sale:'Correo de entrega a UIDE', plazo:'Inmediato'},
 };
 
+/* Resumen en audio de cada página (botón «Escuchar el resumen») */
+const RESUMENES = {
+  'inicio': 'Este portal explica cómo se produce una asignatura en la Fábrica, en siete pasos. Primero, la materia ingresa con su carpeta. Segundo, Calidad la revisa con una pauta de nueve puntos. Tercero, el dashboard la asigna de forma automática según la fecha de lanzamiento. Cuarto, se produce en paralelo: diseño en tres días hábiles y video en un día hábil. Quinto, se hace el cierre, con el banner y la revisión de seis puntos. Sexto, se carga a Canvas y se verifica. Y séptimo, el dashboard envía el correo de entrega a UIDE. Si trabajas en diseño o en video, empieza por tu frente. Si buscas un archivo, ve a la biblioteca.',
+  'ingreso': 'Una asignatura entra a la Fábrica cuando Diseño Instruccional entrega su carpeta y se registra en el dashboard. La carpeta trae seis documentos base: un Documento de Clase y un documento de Qué hemos aprendido por cada una de las tres clases, además de los guiones de video. La fecha de lanzamiento ordena toda la cola. Si una materia pasa su tope de fábrica, que es el lanzamiento menos diez días hábiles, queda Vencida y va primero.',
+  'calidad-entrada': 'Antes de entrar a la cola, Calidad revisa cada materia nueva con una pauta de nueve puntos. Mientras está en revisión, no se asigna ni admite timers. Si algo falla, vuelve a Diseño Instruccional para corregir y luego pasa a una nueva ronda. Cuando los nueve puntos están bien, la materia entra a la cola. Si pasa un día hábil sin movimiento, el dashboard lo marca.',
+  'cola': 'Nadie asigna materias a mano: el dashboard te da la siguiente según la fecha de lanzamiento, con las vencidas primero, y te reserva la próxima antes de que termines. El plazo empieza a contar desde que se te asigna la materia. Si una materia pasa un día hábil sin trabajo y hay alguien libre, pasa a esa persona. Usa un solo timer a la vez y avisa a coordinación si activas uno por error. La meta en diseño es una asignatura cada tres días hábiles, y en video, una por día.',
+  'diseno': 'El frente de diseño tiene diez etapas en orden. Primero validas los seis documentos base y armas las estructuras de Canvas. Después preparas las carpetas, haces los guiones y los Genially, y reúnes sus enlaces por clase. Luego generas los HTML con la skill HTML para Canvas, aprobando el mapa maestro y revisando cada HTML en Canvas antes de pedir sus prompts de imagen. Después vienen las infografías, las imágenes con la skill Image Batch Generator y el banner. Al final revisas que estén todos los entregables.',
+  'video': 'Por cada asignatura se producen seis videos: la introducción, uno por cada clase, el video del profesor y el Genially de recursos de aprendizaje. Para los videos con avatar, pasas el guion por la skill de video en tres pasos: guion limpio, storyboard y prompt. Luego pegas ese prompt en Synthesia, con el modo Maintain, duración Medium, el branding de Maestrías EIG y la entrega Dynamic. El video del profesor lo graba el docente y en edición se le agregan las cortinillas.',
+  'cierre': 'Cuando la producción llega al cien por ciento, falta el cierre para que la materia quede Completada. El cierre tiene dos partes: el banner, que se registra con su timer, y una revisión de seis puntos en la pestaña Cierre, que cualquier persona del equipo puede marcar. Mientras falte, el dashboard muestra noventa y nueve por ciento.',
+  'canvas': 'Con la materia cerrada, se monta en Canvas y se verifica con un checklist de ocho puntos: la maquetación de cada clase, la estructura según la matriz, los resultados de aprendizaje, los quizzes, Qué hemos aprendido, las conclusiones, los nombres y que los enlaces y videos abran. Al terminar se anota qué se encontró y si se corrigió.',
+  'entrega': 'Cuando la materia queda Completada, el dashboard envía solo el correo de entrega a UIDE, con copia a coordinación. Para que salga, el cierre debe estar completo y el enlace del curso debe estar registrado. Si el correo no salió, revisa esas dos cosas y avisa a coordinación.',
+  'recursos': 'La biblioteca reúne los archivos del Drive de la Fábrica, agrupados por frente: diseño, video, lineamientos, y equipo y herramientas. Puedes filtrar por frente o escribir un nombre o una etapa. Cada enlace abre el archivo o la carpeta en Drive.',
+  'lineamientos': 'Los lineamientos son las reglas que vienen de fuera de la Fábrica. Las guías de generación de contenido, en su versión del veintitrés de octubre, definen cómo entregan los docentes. Toda pieza respeta la marca de EIG Campus y de UIDE, y los fondos siguen un color por clase: vino, beige y negro. La nueva metodología de audio y videopodcast todavía está en construcción.',
+  'faq': 'Aquí están las dudas más comunes: qué hacer si faltan documentos, cómo se asignan las materias, qué hacer con un timer activado por error, por qué una materia queda en noventa y nueve por ciento y por qué no sale el correo a UIDE.',
+};
+
+/* Pregúntame: categoría, pregunta, respuesta, a dónde lleva y palabras clave */
+const PREGUNTAS = [
+  {cat:'Para empezar', q:'¿Cuál es el proceso de una materia?', a:'Son 7 pasos: ingreso, calidad de entrada, cola y asignación, producción (diseño y video en paralelo), cierre, cargue a Canvas y entrega a UIDE.', ir:'inicio', kw:'proceso pasos flujo etapas general'},
+  {cat:'Para empezar', q:'¿Quién me asigna la siguiente materia?', a:'El dashboard, de forma automática y según la fecha de lanzamiento, con las vencidas primero. Además te reserva la próxima antes de que termines. Nadie asigna materias a mano.', ir:'cola', kw:'asignar asignacion siguiente cola reserva'},
+  {cat:'Para empezar', q:'¿Cuánto tiempo tengo por materia?', a:'3 días hábiles en diseño y 1 día hábil en video. El plazo empieza a contar desde que se te asigna la materia, aunque no hayas iniciado un timer.', ir:'cola', kw:'tiempo plazo dias meta cuanto'},
+  {cat:'Para empezar', q:'¿Cómo abro una skill en ChatGPT?', a:'Usa ChatGPT de escritorio. Abre un chat nuevo en la pestaña Work y, con el botón (+) de la barra de escritura, elige la skill. Trabaja cada clase en un chat distinto.', ir:'diseno-6', url:['Skills de Diseño','skills'], kw:'skill chatgpt abrir work boton usar'},
+  {cat:'Diseño', q:'¿Cuáles son los entregables de diseño?', a:'Por asignatura: 3 estructuras Canvas, un guion y un Genially por tema, 3 documentos de enlaces, un HTML por tema con sus prompts, 5 imágenes por HTML, 3 infografías y el banner.', ir:'diseno', kw:'entregables entregas recursos cantidad'},
+  {cat:'Diseño', q:'¿Qué skill uso en cada etapa?', a:'Etapa 4: Guiones Geniallys. Etapa 6: HTML para Canvas. Etapa 7: Guiones Infografías. Etapa 8: Image Batch Generator. La skill de Estructuras Canvas (etapa 2) está por confirmar.', ir:'diseno', kw:'skill skills herramienta etapa cual'},
+  {cat:'Diseño', q:'¿Cómo armo los documentos de links de Genially?', a:'Publica cada Genially, copia su enlace o código de inserción (iframe) y pégalo en el documento de links de su clase, indicando el tema. Guarda los 3 documentos en la carpeta de Geniallys en Drive y descárgalos a tu carpeta Asignatura.', ir:'diseno-5', kw:'links enlaces genially iframe insercion publicar documento'},
+  {cat:'Diseño', q:'¿Qué es el mapa maestro del HTML?', a:'Es lo primero que entrega la skill HTML para Canvas: los temas, los 4 apartados de cada HTML, el Genially de cada uno y los recursos adicionales (tablas, figuras, códigos, anexos). Debes aprobarlo antes de que genere los HTML, porque guía todo el proceso.', ir:'diseno-6', kw:'mapa maestro html aprobar apartados'},
+  {cat:'Diseño', q:'¿Cuándo escribo «Aprobado» y «continúa»?', a:'«Aprobado», después de revisar el HTML en Canvas: la skill entrega sus prompts de imagen. «continúa», cuando ya pegaste esos prompts en su documento: la skill pasa al siguiente HTML.', ir:'diseno-6', kw:'aprobado continua prompts html canvas'},
+  {cat:'Diseño', q:'¿Dónde guardo las imágenes generadas?', a:'En la carpeta renders, dentro de la carpeta de imágenes de cada clase. Cada conjunto va en su propia carpeta, con el nombre de su tema.', ir:'diseno-8', kw:'imagenes guardar renders carpeta zip'},
+  {cat:'Diseño', q:'¿Qué hago si los documentos no coinciden?', a:'No empieces esa parte. Regístralo en el documento de incidencias (asignatura, clase, documento y qué pasa) y espera la corrección de Diseño Instruccional.', ir:'diseno-1', url:['Documento de incidencias','incidencias'], kw:'documentos no coinciden falta incidencia error'},
+  {cat:'Video', q:'¿Cómo hago un video en Synthesia?', a:'Pasa el guion por la skill de video en 3 pasos (guion limpio, storyboard y prompt). Luego pega el prompt del paso 3 en Synthesia, configura y genera.', ir:'video-2', kw:'video synthesia hacer avatar guion storyboard'},
+  {cat:'Video', q:'¿Qué configuración uso en Synthesia?', a:'Modo Maintain, el avatar que corresponda, duración Medium, en Style el Branding Maestrías EIG y en Delivery Dynamic. Luego haz los ajustes manuales en Edit.', ir:'video-3', kw:'configuracion synthesia maintain medium branding dynamic'},
+  {cat:'Video', q:'¿Cómo debe grabar el profesor su video?', a:'Con el celular en horizontal a la altura de los ojos, luz natural, lugar silencioso y plano medio. Saluda, dice su nombre, quién es y su experiencia.', ir:'video-4', kw:'profesor docente grabar video grabacion'},
+  {cat:'Dashboard y timers', q:'¿Puedo tener dos timers abiertos?', a:'No. Usa un timer a la vez: dos en paralelo cuentan el mismo tiempo dos veces.', ir:'cola', kw:'timer timers dos paralelo'},
+  {cat:'Dashboard y timers', q:'Activé un timer por error, ¿qué hago?', a:'Detenlo y avisa a coordinación con la materia, la tarea y la hora, para eliminarlo.', ir:'cola', kw:'timer error equivocado borrar eliminar'},
+  {cat:'Dashboard y timers', q:'¿Qué significa «Sin movimiento»?', a:'Que una materia asignada pasó 1 día hábil completo sin trabajo. Si hay otra persona libre, el dashboard se la pasa a ella.', ir:'cola', kw:'sin movimiento reasigna'},
+  {cat:'Dashboard y timers', q:'¿Qué es una materia Vencida?', a:'Una materia que pasó su tope de fábrica (lanzamiento menos 10 días hábiles) sin completarse. Va primero en la cola.', ir:'ingreso', kw:'vencida tope fecha'},
+  {cat:'Cierre y entrega', q:'¿Por qué mi materia está en 99 %?', a:'Le falta el cierre: el banner (timer «Creación de banner») o algún punto de la revisión de 6 puntos en la pestaña «Cierre».', ir:'cierre', kw:'99 falta cierre porcentaje'},
+  {cat:'Cierre y entrega', q:'¿Qué revisa el cierre?', a:'Imágenes completas, títulos de video iguales a la clase y sin logo de Synthesia, Genially de la materia y la semana, banner con nombres vigentes, nombres sin errores y HTML completo.', ir:'cierre', kw:'cierre revision seis puntos'},
+  {cat:'Cierre y entrega', q:'¿Por qué no salió el correo a UIDE?', a:'Para que salga, la materia necesita el cierre completo y el enlace del curso registrado. Si las dos cosas están, avisa a coordinación.', ir:'entrega', kw:'correo email uide entrega no salio'},
+  {cat:'Cierre y entrega', q:'¿Qué se revisa al cargar a Canvas?', a:'Un checklist de 8 puntos: maquetación por clase, estructura según la matriz, resultados de aprendizaje, quizzes, Qué hemos aprendido, conclusiones, nombres y que enlaces y videos abran.', ir:'canvas', kw:'canvas cargue montar checklist'},
+  {cat:'Archivos', q:'¿Dónde están las plantillas de infografía?', a:'En la carpeta de plantillas de infografía, versión de octubre de 2026, para Affinity, Illustrator y Canva.', ir:'recursos', url:['Plantillas de infografía','plantInfografia'], kw:'plantilla infografia affinity'},
+  {cat:'Archivos', q:'¿Dónde está la plantilla del banner?', a:'En la carpeta de plantillas de banner, para Affinity e Illustrator. Antes de crearlo, confirma los nombres vigentes de la maestría y la materia.', ir:'diseno-9', url:['Plantillas de banner','plantBanner'], kw:'plantilla banner affinity'},
+  {cat:'Archivos', q:'¿Dónde están los fondos por clase?', a:'En el banco de imágenes: vino para la Clase 1, beige para la Clase 2 y negro para la Clase 3.', ir:'recursos', url:['Banco de imágenes','banco'], kw:'fondos clase colores banco imagenes'},
+  {cat:'Archivos', q:'¿Dónde pido vacaciones?', a:'Con el formato de solicitud de vacaciones. Avisa también a coordinación para pausarte en el dashboard.', ir:'recursos', url:['Formato de vacaciones','vacaciones'], kw:'vacaciones permiso ausencia'},
+];
+/* Enlaces externos que usa Pregúntame */
+const PREG_URLS = {
+  skills: doc('1_qPRzkYvBqMxHnKr_E5BVQGScgVvN0AOB4I6Xlc-s-Y'),
+  incidencias: L.incidencias,
+  plantInfografia: L.plantInfografia,
+  plantBanner: L.plantBanner,
+  banco: fol('14k3l0gteUSzxnlua9Mm1GCfN8NhBwjuO'),
+  vacaciones: fil('1DEPyXFahRl1O5_YTe1S47cuX5aFjsB0N'),
+};
+
 /* =========================================================
    A partir de aquí no hace falta editar.
    ========================================================= */
@@ -737,6 +850,34 @@ $('quick').innerHTML = ACCESOS.map(([t,u]) => ext(t,u)).join('');
 $('heroLinks').innerHTML = `<a class="btn solid" href="${L.dashboard}" target="_blank" rel="noopener">Abrir el dashboard${EXT}</a><a class="btn" href="${L.driveRaiz}" target="_blank" rel="noopener">Abrir el Drive${EXT}</a>`;
 $('lnkProceso').href = L.insProceso;
 
+/* Escuchar el resumen (voz del navegador) */
+const ICON_ON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const ICON_OFF = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>';
+function pintarEscuchar(b, on){ b.innerHTML = on ? ICON_OFF + 'Detener el resumen' : ICON_ON + 'Escuchar el resumen'; b.setAttribute('aria-pressed', on); }
+const synth = window.speechSynthesis;
+let voz = null, hablando = null, turno = 0;
+function elegirVoz(){
+  if (!synth) return;
+  const vs = synth.getVoices(), pref = ['es-CO','es-419','es-MX','es-US','es-ES'];
+  voz = pref.map(l => vs.find(v => v.lang.replace('_','-') === l)).find(Boolean) || vs.find(v => /^es/i.test(v.lang)) || null;
+}
+if (synth) { elegirVoz(); synth.onvoiceschanged = elegirVoz; }
+function pararVoz(){ turno++; if (synth) synth.cancel(); if (hablando) { pintarEscuchar(hablando, false); hablando = null; } }
+function hablar(b){
+  if (hablando === b) { pararVoz(); return; }
+  pararVoz();
+  const mio = ++turno; hablando = b; pintarEscuchar(b, true);
+  const partes = RESUMENES[b.dataset.res].match(/[^.!?]+[.!?]*/g) || [RESUMENES[b.dataset.res]];
+  partes.forEach((p, k) => {
+    const u = new SpeechSynthesisUtterance(p.trim());
+    u.lang = voz ? voz.lang : 'es-CO'; if (voz) u.voice = voz; u.rate = 1;
+    if (k === partes.length - 1) u.onend = () => { if (mio === turno) { pintarEscuchar(b, false); hablando = null; } };
+    synth.speak(u);
+  });
+}
+document.addEventListener('click', ev => { const b = ev.target.closest('.listen'); if (b) hablar(b); });
+window.addEventListener('pagehide', pararVoz);
+
 /* Barra de avance, ficha y anterior/siguiente en cada página */
 const TITULOS = Object.fromEntries([...PROCESO.map(p=>[p[0],p[1]]), ...CONSULTA]);
 document.querySelectorAll('section.view').forEach(sec => {
@@ -758,6 +899,11 @@ document.querySelectorAll('section.view').forEach(sec => {
     dl.innerHTML = [['Quién lo hace',f.quien],['Qué entra',f.entra],['Qué sale',f.sale],['Plazo',f.plazo]]
       .map(([k,v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('');
     sec.querySelector('.lead').after(dl);
+  }
+  if (RESUMENES[id] && window.speechSynthesis) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'listen'; b.dataset.res = id;
+    b.setAttribute('aria-pressed','false'); pintarEscuchar(b, false);
+    (sec.querySelector('.lead') || h2).after(b);
   }
   const i = ORDEN.indexOf(id), prev = ORDEN[i-1], next = ORDEN[i+1];
   if (id !== 'inicio') {
@@ -839,6 +985,7 @@ pintarBiblioteca();
 /* Páginas: una sección a la vez, según el #enlace */
 const views = [...document.querySelectorAll('section.view')];
 function mostrar(){
+  pararVoz();
   const hash = decodeURIComponent(location.hash.slice(1)) || 'inicio';
   let target = document.getElementById(hash);
   let sec = target && (target.matches('section.view') ? target : target.closest('section.view'));
@@ -887,6 +1034,63 @@ document.addEventListener('keydown', ev => {
   if (ev.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { ev.preventDefault(); if (innerWidth<=860) abrirMenu(); qIn.focus(); }
   if (ev.key === 'Escape') { if (res.classList.contains('on')) { qIn.value=''; res.classList.remove('on'); } else cerrarMenu(); }
 });
+
+/* Pregúntame */
+const askFab = $('askFab'), askPanel = $('askPanel'), askBody = $('askBody'), askIn = $('askIn');
+const STOP = new Set('el la los las lo le les de del al en y o u a que un una unos unas por para con mi mis me se es son como donde cual cuales cuando quien hago hacer hay su sus si no esta este esto eso estan tengo tiene puedo debo ya muy mas pero sobre entre cuanto cuantos cuanta cuantas mide algo alguien ahora'.split(' '));
+const tokens = s => norm(s).replace(/[^a-z0-9ñ ]/g,' ').split(/\s+/).filter(w => w.length > 2 && !STOP.has(w));
+const CATS = [...new Set(PREGUNTAS.map(p => p.cat))];
+function inicioAsk(){
+  askBody.innerHTML = CATS.map(c => `<div class="ask-cat"><h3>${esc(c)}</h3><div class="ask-chips">${
+    PREGUNTAS.map((p,i) => p.cat === c ? `<button class="ask-chip" type="button" data-p="${i}">${esc(p.q)}</button>` : '').join('')}</div></div>`).join('');
+  askBody.scrollTop = 0;
+}
+function responder(i, extra){
+  const p = PREGUNTAS[i];
+  const relacionadas = (extra && extra.length ? extra : PREGUNTAS.map((x,k)=>k).filter(k => k!==i && PREGUNTAS[k].cat===p.cat)).slice(0,3);
+  const ir = p.ir ? `<a class="main" href="#${p.ir}" data-cerrar>Ver en el portal: ${esc(TITULO_DE(p.ir))}</a>` : '';
+  const url = p.url && PREG_URLS[p.url[1]] ? `<a href="${esc(PREG_URLS[p.url[1]])}" target="_blank" rel="noopener">${esc(p.url[0])}${EXT}</a>` : '';
+  askBody.innerHTML = `<button class="ask-back" type="button" data-volver>Todas las preguntas</button>
+    <p class="ask-q">${esc(p.q)}</p><p class="ask-a">${esc(p.a)}</p>
+    <div class="ask-go">${ir}${url}</div>
+    ${relacionadas.length ? `<div class="ask-cat"><h3>${extra && extra.length ? '¿Buscabas otra cosa?' : 'Relacionadas'}</h3><div class="ask-chips">${relacionadas.map(k => `<button class="ask-chip" type="button" data-p="${k}">${esc(PREGUNTAS[k].q)}</button>`).join('')}</div></div>` : ''}`;
+  askBody.scrollTop = 0;
+}
+function TITULO_DE(id){
+  const el = document.getElementById(id); if (!el) return 'Inicio';
+  const sec = el.matches('section.view') ? el : el.closest('section.view');
+  if (el !== sec && el.tagName === 'DETAILS') { const h = el.querySelector('h4'); return (sec.dataset.titulo + ', ' + (h ? h.firstChild.textContent.trim() : '')); }
+  return sec ? sec.dataset.titulo : 'Inicio';
+}
+function preguntar(texto){
+  const ts = tokens(texto);
+  if (!ts.length) { inicioAsk(); return; }
+  const puntaje = PREGUNTAS.map((p,i) => {
+    const fuerte = norm(p.q + ' ' + p.kw), debil = norm(p.a);
+    let s = 0; ts.forEach(t => { const r = t.length > 5 ? t.slice(0,5) : t; if (fuerte.includes(r)) s += 3; else if (debil.includes(r)) s += 1; });
+    return {i, s};
+  }).filter(x => x.s >= 3).sort((a,b) => b.s - a.s);
+  if (puntaje.length) { responder(puntaje[0].i, puntaje.slice(1,3).map(x => x.i)); return; }
+  const hits = INDICE.map(x => ({x, s: ts.filter(w => x.txt.includes(w.length>5?w.slice(0,5):w)).length})).filter(h => h.s).sort((a,b)=>b.s-a.s).slice(0,4);
+  askBody.innerHTML = `<button class="ask-back" type="button" data-volver>Todas las preguntas</button>
+    <p class="ask-q">${esc(texto)}</p>
+    <p class="ask-a">No tengo una respuesta exacta para eso.${hits.length ? ' Esto del portal puede servirte:' : ' Prueba con otras palabras o elige una de las preguntas.'}</p>
+    ${hits.length ? `<div class="ask-go" style="flex-direction:column;align-items:flex-start">${hits.map(({x}) => x.url
+      ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.t)}${EXT}</a>` : `<a href="#${x.el}" data-cerrar>${esc(x.t)}</a>`).join('')}</div>` : ''}
+    <p class="ask-note">Si es algo que no está en el proceso, pregúntale a coordinación.</p>`;
+}
+function abrirAsk(){ askPanel.hidden = false; askFab.setAttribute('aria-expanded','true'); inicioAsk(); askIn.focus(); }
+function cerrarAsk(){ askPanel.hidden = true; askFab.setAttribute('aria-expanded','false'); askFab.focus({preventScroll:true}); }
+askFab.addEventListener('click', abrirAsk);
+$('askClose').addEventListener('click', cerrarAsk);
+$('askForm').addEventListener('submit', ev => { ev.preventDefault(); preguntar(askIn.value); });
+askBody.addEventListener('click', ev => {
+  const chip = ev.target.closest('[data-p]'); if (chip) { askIn.value = ''; responder(+chip.dataset.p); return; }
+  if (ev.target.closest('[data-volver]')) { askIn.value = ''; inicioAsk(); return; }
+  const a = ev.target.closest('a[data-cerrar]');
+  if (a) { if (a.getAttribute('href') === location.hash) { ev.preventDefault(); mostrar(); } if (innerWidth <= 600) cerrarAsk(); }
+});
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !askPanel.hidden) { ev.stopImmediatePropagation(); cerrarAsk(); } }, true);
 
 /* Modo claro / oscuro */
 const temaActual = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
